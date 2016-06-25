@@ -1,7 +1,7 @@
 var Context = {
     game: null,
 };
-var player, platforms,cursors;
+var playerManager, currentPlayer, platforms, cursors;
 // preload process for main index
 window.onload = function() {
     // field for game object
@@ -15,7 +15,9 @@ window.onload = function() {
 /* a function that preload all necessary graphic */
 function preload() {
     Context.game.load.image('ground', 'assets/image/background/ground.png');
-    player = new Player("player1");
+    playerManager = new PlayerManager();
+    currentPlayer = new Player('player1');
+    playerManager.pushPlayer(currentPlayer);
 }
 
 function create() {
@@ -41,35 +43,61 @@ function create() {
 
     ledge.body.immovable = true;
 
-    player.addPlayerToWorld();
+    playerManager.addPlayersToWorld();
 
     cursors = Context.game.input.keyboard.createCursorKeys();
 }
 
 function update() {
-    Context.game.physics.arcade.collide(player, platforms);
+    Context.game.physics.arcade.collide(currentPlayer.player, platforms);
     //  Reset the players velocity (movement)
-    player.body.velocity.x = 0;
+    currentPlayer.player.body.velocity.x = 0;
 
-    if (cursors.left.isDown)
-    {
+    if (cursors.left.isDown) {
         //  Move to the left
-        player.body.velocity.x = -150;
-    }
-    else if (cursors.right.isDown)
-    {
+        currentPlayer.player.body.velocity.x = -150;
+    } else if (cursors.right.isDown) {
         //  Move to the right
-        player.body.velocity.x = 150;
-    }
-    else
-    {}
+        currentPlayer.player.body.velocity.x = 150;
+    } else {}
 
     //  Allow the player to jump if they are touching the ground.
-    if (cursors.up.isDown && player.body.touching.down)
-    {
-        player.body.velocity.y = -350;
+    if (cursors.up.isDown && currentPlayer.player.body.touching.down) {
+        currentPlayer.player.body.velocity.y = -350;
     }
 }
+
+
+var PlayerManager = function() {
+    var list = [];
+
+    function pushPlayer(player) {
+        list.push(player);
+    }
+
+    function removePlayer() {
+        list.remove(player);
+    }
+
+    function update() {
+        for (var player in list) {
+            //player.update();
+        }
+    }
+
+    function addPlayersToWorld() {
+        for (var i = 0; i < list.length; i++) {
+            list[i].addPlayerToWorld();
+        }
+    }
+
+    return {
+        pushPlayer: pushPlayer,
+        removePlayer: removePlayer,
+        addPlayersToWorld: addPlayersToWorld,
+        update: update
+    };
+};
 
 /*
  * A class that make a new player to the game
@@ -77,22 +105,19 @@ function update() {
 var Player = function(name) {
     // initialize player's name and add it to the game object
     var playerName = name;
+    this.player = null;
     Context.game.load.image(name, 'assets/image/player/player1right.png');
-
-    // field for keep track player's position
-    this.x = 0;
-    this.y = 0;
-
 
     this.getName = function() {
         return playerName;
     };
 
     this.addPlayerToWorld = function() {
-        player = Context.game.add.sprite(0, 0, name);
-        Context.game.physics.arcade.enable(player);
+        this.player = Context.game.add.sprite(0, 0, name);
+        Context.game.physics.arcade.enable(this.player);
 
-        player.body.gravity.y = 300;
-        player.body.collideWorldBounds = true;
+        this.player.body.gravity.y = 300;
+        this.player.body.collideWorldBounds = true;
     };
+
 };
