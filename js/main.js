@@ -1,10 +1,7 @@
 var Context = {
     game: null,
-    keyLeft: null,
-    keyRight: null,
-    keyUp: null
 };
-var player, platforms;
+var player, platforms,cursors;
 // preload process for main index
 window.onload = function() {
     // field for game object
@@ -45,10 +42,33 @@ function create() {
     ledge.body.immovable = true;
 
     player.addPlayerToWorld();
+
+    cursors = Context.game.input.keyboard.createCursorKeys();
 }
 
 function update() {
     Context.game.physics.arcade.collide(player, platforms);
+    //  Reset the players velocity (movement)
+    player.body.velocity.x = 0;
+
+    if (cursors.left.isDown)
+    {
+        //  Move to the left
+        player.body.velocity.x = -150;
+    }
+    else if (cursors.right.isDown)
+    {
+        //  Move to the right
+        player.body.velocity.x = 150;
+    }
+    else
+    {}
+
+    //  Allow the player to jump if they are touching the ground.
+    if (cursors.up.isDown && player.body.touching.down)
+    {
+        player.body.velocity.y = -350;
+    }
 }
 
 /*
@@ -75,28 +95,4 @@ var Player = function(name) {
         player.body.gravity.y = 300;
         player.body.collideWorldBounds = true;
     };
-};
-
-/*
- * A static class that define key event functions
- */
-var KeyEvent = {
-    left: function() {
-        Context.game.load.image(name, 'assets/image/player/player1left.png');
-        if (player.x >= 5) {
-            player.x -= 5;
-        }
-    },
-    right: function() {
-        Context.game.load.image(name, 'assets/image/player/player1right.png');
-        if (player.x <= 795) {
-            player.x += 5;
-        }
-    },
-    up: function() {
-        Context.game.load.image(name, 'assets/image/player/player1left.png');
-        if (player.y >= 5) {
-            player.y -= 5;
-        }
-    }
 };
