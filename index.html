@@ -1,37 +1,12 @@
 <!doctype html>
 <html>
     <head>
-        <meta charset="UTF-8" />
         <title>EngHack 2016</title>
-        <script src="phaser.min.js"></script>
     </head>
     <body>
 
-    <script type="text/javascript">
-
-    window.onload = function() {
-
-        var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-
-        function preload () {
-
-          game.load.image('playerLeft','assets/player1Left.png');
-
-        }
-
-        function create () {
-
-            game.add.sprite(0,0,'playerLeft');
-
-        }
-
-        function update(){
-
-        }
-
-    };
-
-    </script>
-
     </body>
+    <!-- js files -->
+    <script type="text/javascript" src="js/phaser.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
 </html>
