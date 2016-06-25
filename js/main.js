@@ -1,7 +1,7 @@
 var Context = {
     game: null,
 };
-var playerManager, currentPlayer, platforms, cursors;
+var playerManager, currentPlayer, cursors;
 // preload process for main index
 window.onload = function() {
     // field for game object
@@ -23,47 +23,29 @@ function preload() {
 function create() {
     //  We're going to be using physics, so enable the Arcade Physics system
     Context.game.physics.startSystem(Phaser.Physics.ARCADE);
-
-    platforms = Context.game.add.group();
-
-    platforms.enableBody = true;
-    platforms.physicsBodyType = Phaser.Physics.ARCADE;
-
-    var ground = platforms.create(0, Context.game.world.height - 64, 'ground');
-
-    ground.scale.setTo(2, 2);
-
-    ground.body.immovable = true;
-
-    var ledge = platforms.create(300, Context.game.world.height - 192, 'ground');
-
-    ledge.body.immovable = true;
-
-    ledge = platforms.create(-550, Context.game.world.height - 320, 'ground');
-
-    ledge.body.immovable = true;
-
     playerManager.addPlayersToWorld();
-
     cursors = Context.game.input.keyboard.createCursorKeys();
 }
 
 function update() {
-    Context.game.physics.arcade.collide(currentPlayer.player, platforms);
+    Context.game.physics.arcade.collide(currentPlayer.player);
     //  Reset the players velocity (movement)
     currentPlayer.player.body.velocity.x = 0;
+    currentPlayer.player.body.velocity.y = 0;
 
-    if (cursors.left.isDown) {
+    currentPlayer.player.rotation = Context.game.physics.arcade.angleToPointer(currentPlayer.player);
+    if (cursors.left.isDown){
         //  Move to the left
         currentPlayer.player.body.velocity.x = -150;
-    } else if (cursors.right.isDown) {
+    } else if (cursors.right.isDown){
         //  Move to the right
-        currentPlayer.player.body.velocity.x = 150;
-    } else {}
-
-    //  Allow the player to jump if they are touching the ground.
-    if (cursors.up.isDown && currentPlayer.player.body.touching.down) {
-        currentPlayer.player.body.velocity.y = -350;
+       currentPlayer.player.body.velocity.x = 150;
+    } else if (cursors.up.isDown) {
+        // Move up
+        currentPlayer.player.body.velocity.y = -150;
+    } else if (cursors.down.isDown) {
+        // Move down
+        currentPlayer.player.body.velocity.y = 150;
     }
 }
 
@@ -106,7 +88,7 @@ var Player = function(name) {
     // initialize player's name and add it to the game object
     var playerName = name;
     this.player = null;
-    Context.game.load.image(name, 'assets/image/player/player1right.png');
+    Context.game.load.image(name, 'assets/image/player/player1left.png');
 
     this.getName = function() {
         return playerName;
@@ -115,8 +97,6 @@ var Player = function(name) {
     this.addPlayerToWorld = function() {
         this.player = Context.game.add.sprite(0, 0, name);
         Context.game.physics.arcade.enable(this.player);
-
-        this.player.body.gravity.y = 300;
         this.player.body.collideWorldBounds = true;
     };
 
