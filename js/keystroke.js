@@ -1,20 +1,6 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="author" content="Johnson  Han">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>KeyStroke Detection</title>
-</head>
-<body style='background-color:lightblue;'>
-</body>
-</html>
- 
-<script>
-console.log("starting");
-
 window.onload = function() {
-   document.getElementsByTagName('body')[0].onkeydown = function(e) { 
+	console.log('DOM Ready');
+    document.getElementsByTagName('body')[0].onkeydown = function(e) { 
       var ev = e || event; 
       if(ev.keyCode == 38 || ev.keyCode == 87) {registerEvent('jump');} 
       if(ev.keyCode == 37 || ev.keyCode == 65) {registerEvent('left');} 
@@ -35,4 +21,3 @@ function registerEvent(message){
 	else if(message == 'down') action_log += 's';
 	console.log(action_log);
 }
-</script>
