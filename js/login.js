@@ -1,10 +1,16 @@
  var login = true;
  window.onload = load;
  function load(){
+ 	Context.game.paused = true;
  	document.getElementsByTagName('body')[0].onkeydown = function(e) { 
       var ev = e || event; 
       if(ev.keyCode == 13) {action();} 
-      // else if(ev.keyCode == 27)    
+      else if(ev.keyCode == 27) {
+      	if(login == false){
+      		if(Context.game.paused == true) Context.game.paused = false;
+      		else if(Context.game.paused == false) Context.game.paused = true;
+      	}
+      }
   	} 
  	login_status(true);
  	setTimeout(function(){
@@ -13,14 +19,17 @@
  	}, 500);
  	// login_status(false);
  } 
+window.onbeforeunload = function() {
+    return false;
+}
  function sweet(message){
- 	var x;
+ 	alert('sweet');
+ 	var xx;
     if (confirm(message) == true) {
-        x = true;
+        xx = true;
     } else {
-        x = false;
-    }
-    return x;
+        xx = false;
+    } 
  }
  function action(){  
  	if(login == false) return;
@@ -43,6 +52,7 @@
 	 }else{
  		console.log('login status::::: FALSE');
  		login = false;
+ 		Context.game.paused = false;
 	 	$('#section-main').css('-webkit-filter', 'blur(0px)');
 	 	$('#section-main').css('pointer-events', 'auto');
 	 	$('body').css('background-color', 'teal');
