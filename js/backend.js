@@ -25,7 +25,7 @@ function hasPlayer(roomName,playerName){
 	  	document.getElementById('player-name').value = '';
 	  }else{
 	  	console.log('player Name is free');
-	  	if(getRoomSize() >= 4){
+	  	if(getRoomSize() >= 3){
 	  		alert('Room Full');
 	  		console.log('Room Full ');
 	  		console.log('Room Full ' + getRoomSize());
