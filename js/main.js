@@ -1,12 +1,12 @@
 // main field for game object
 var Context = {
-    game: new Phaser.Game(800, 600, Phaser.CANVAS, 'game', {
+    game: new Phaser.Game(screen.width-50, screen.height-200, Phaser.CANVAS, 'game', {
         preload: preload,
         create: create,
         update: update
     }),
-    width: 800,
-    height: 600
+    width: screen.width-50,
+    height: screen.height-200
 };
 // information of fireball attack
 var Attack = {

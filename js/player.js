@@ -95,11 +95,11 @@ var Player = function(name, bot) {
         }
     };
     this.addPlayerToWorld = function() {
-        if(gamerName==='me'){
+        if(gamerName ==='me'){
           this.player = Context.game.add.sprite(Context.game.world.centerX,genRandom(Context.height), gamerName);
         }
         else {
-          this.player = Context.game.add.sprite(-400, -400, gamerName);
+          this.player = Context.game.add.sprite(Context.width-gamerName*32, Context.height, gamerName);
         }
         this.player.anchor.set(0.5);
         Context.game.physics.enable(this.player, Phaser.Physics.ARCADE);
