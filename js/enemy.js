@@ -45,7 +45,7 @@ function Enemy() {
     };
 
     this.spawnEnemy = function() {
-        var posX, posY;
+        var posX;
         directionX = genDirection();
         directionY = genDirection();
         if (directionX === -1) {

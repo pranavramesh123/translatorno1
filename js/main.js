@@ -78,11 +78,12 @@ function update() {
             var player = playerManager.getItem(i);
             player.x = special_key_pair[key]['positionX'];
             player.y = special_key_pair[key]['positionY'];
+            console.log(player.x+'    '+ player.y);
             if (special_key_pair[key]['health'] <= 0) {
                 player.kill();
             }
         }
-    }  
+    }
 
     Context.game.physics.arcade.overlap(currentPlayer.player, enemyGroup, hitEnemy, null, this);
     Context.game.physics.arcade.overlap(Attack.fireBall, enemyGroup, killEnemyBall, null, this);
