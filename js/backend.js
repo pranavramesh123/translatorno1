@@ -126,8 +126,7 @@ function getRoomStatus(roomName){
 	var segmentRef = ref.child(roomName);
 	segmentRef.on("value", function(snapshot) {
 	  var unique = snapshot.val();
-	  console.log(unique);
-	  return snapshot.val();
+	  return unique;
 	}, function (errorObject) {
 	  //console.log("Then read failed: " + errorObject.code);
 	  return null;
