@@ -26,7 +26,7 @@ function preload() {
     // initialize players
     playerManager = new PlayerManager();
     currentPlayer = new Player('me', false);
-    for (var i = 0; i < 3; i++) {
+    for (var i = 1; i < 4; i++) {
         var player = new Player(i, true);
         playerManager.pushPlayer(player);
     }

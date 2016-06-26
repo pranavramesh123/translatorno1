@@ -70,7 +70,7 @@ var Player = function(name, bot) {
     } 
     
     Context.game.load.image('heart', 'assets/image/player/heart.png');
-    Context.game.load.image(name, 'assets/image/player/gunPlayer.png');
+    Context.game.load.image(gamerName, 'assets/image/player/gunPlayer.png');
 
     this.updateScore = function() {
         tagScoreboard.setText('Score: ' + this.scoreboard);
