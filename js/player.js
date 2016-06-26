@@ -49,7 +49,7 @@ var Player = function(name, type) {
     var playerName = name;
     var health = 200;
     var playerType = type;
-    this.state = true;
+    this.alive = true;
 
     this.player = null;
     this.weapon = null;
@@ -72,7 +72,7 @@ var Player = function(name, type) {
         health -= damage;
         if (health <= 0) {
             playerManager.removePlayer(currentPlayer);
-            this.state=false;
+            this.alive = false;
             this.player.kill();
             if (this.weapon != null) {
                 this.weapon.kill();
