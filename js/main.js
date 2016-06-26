@@ -71,9 +71,10 @@ function update() {
         playerManager.killAllPlayer();
         var listing = getRoomStatus(roomName);
         if(listing != undefined){
-            for (var i = 0; i < listing.length; i++) {
-                var player = new Player(listing[i], 0);
-                player.lifes = listing[i].health; 
+            for (item in listing) {
+                if (item == playerName) continue;
+                var player = new Player(item, 0);
+                player.lifes = item.health; 
                 PlayerManager.pushPlayer(player);
                 if (player.getHealth() <= 0) {
                     player.player.kill();

@@ -33,7 +33,7 @@ var PlayerManager = function() {
     }
 
     function killAllPlayer() {
-        for (var i = 0; i < list.length; i++) {
+        for (var i = 1; i < list.length; i++) {
             list[i].player.kill();
         }
     }
@@ -102,7 +102,7 @@ var Player = function(name, type) {
             healthbar.pop().kill();
             this.lifes--;
         }
-        if (health <= 0) {
+        if (this.lifes <= 0) {
             playerManager.removePlayer(currentPlayer);
             this.alive = false;
             this.player.kill();
