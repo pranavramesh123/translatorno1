@@ -25,8 +25,6 @@ function preload() {
 
     // initialize players
     currentPlayer = new Player('me', 0);
-
-    
 }
 
 /* create function that register more things for objects */
@@ -68,6 +66,22 @@ function create() {
 
 /* udpate function that refresh latest progress */
 function update() {
+    if(!login) {
+        updatePlayerStatus(roomName, playerName, currentPlayer.player.x, currentPlayer.player.y, currentPlayer.lifes);
+        playerManager.killAllPlayer();
+        var listing = getRoomStatus(roomName);
+        if(listing != undefined){
+            for (var i = 0; i < listing.length; i++) {
+                var player = new Player(listing[i], 0);
+                player.lifes = listing[i].health; 
+                PlayerManager.pushPlayer(player);
+                if (player.getHealth() <= 0) {
+                    player.player.kill();
+                }
+            }
+        }
+    }  
+
     Context.game.physics.arcade.overlap(currentPlayer.player, enemyGroup, hitEnemy, null, this);
     Context.game.physics.arcade.overlap(Attack.fireBall, enemyGroup, killEnemyBall, null, this);
     if (currentPlayer.getType() == 1) {

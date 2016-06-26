@@ -32,11 +32,18 @@ var PlayerManager = function() {
         }
     }
 
+    function killAllPlayer() {
+        for (var i = 0; i < list.length; i++) {
+            list[i].player.kill();
+        }
+    }
+
     return {
         pushPlayer: pushPlayer,
         getPlayerByPhysicsInstance: getPlayerByPhysicsInstance,
         removePlayer: removePlayer,
         addPlayersToWorld: addPlayersToWorld,
+        killAllPlayer,
         update: update
     };
 }
@@ -47,7 +54,6 @@ var PlayerManager = function() {
 var Player = function(name, type) {
     // initialize player's name and add it to the game object
     var gamerName = name;
-    var health = 150;
     var healthbar = [];
     var playerType = type;
 
@@ -92,9 +98,9 @@ var Player = function(name, type) {
     };
 
     this.reduceHP = function(damage) {
-        health -= damage;
         if (healthbar.length > 0) {
             healthbar.pop().kill();
+            this.lifes--;
         }
         if (health <= 0) {
             playerManager.removePlayer(currentPlayer);
