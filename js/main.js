@@ -28,6 +28,7 @@ function preload() {
     currentPlayer = new Player('me', false);
     for (var i = 1; i < 4; i++) {
         var player = new Player(i, true);
+        if (i == 4) { player.kill(); }
         playerManager.pushPlayer(player);
     }
 }
