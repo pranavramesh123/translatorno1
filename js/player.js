@@ -8,9 +8,16 @@ var PlayerManager = function() {
         list.push(player);
     }
 
+    function getPlayerByPhysicsInstance(player) {
+        for (var i = 0; i < list.length; i++) {
+            if (list[i].player === player) {
+                return list[i];
+            }
+        }
+    }
+
     function removePlayer(player) {
-        list.remove(player);
-        player.player.kill();
+        list.splice(list.indexOf(player),1);
     }
 
     function update() {
@@ -27,11 +34,12 @@ var PlayerManager = function() {
 
     return {
         pushPlayer: pushPlayer,
+        getPlayerByPhysicsInstance: getPlayerByPhysicsInstance,
         removePlayer: removePlayer,
         addPlayersToWorld: addPlayersToWorld,
         update: update
     };
-};
+}
 
 /*
  * A class that make a new player to the game
@@ -41,6 +49,7 @@ var Player = function(name, type) {
     var playerName = name;
     var health = 200;
     var playerType = type;
+    this.state = true;
 
     this.player = null;
     this.weapon = null;
@@ -62,17 +71,18 @@ var Player = function(name, type) {
     this.reduceHP = function(damage) {
         health -= damage;
         if (health <= 0) {
+            playerManager.removePlayer(currentPlayer);
+            this.state=false;
             this.player.kill();
             if (this.weapon != null) {
                 this.weapon.kill();
             }
         }
     };
-
     this.addPlayerToWorld = function() {
         this.player = Context.game.add.sprite(20, 70, playerName);
-        if (playerType != 0 ) { 
-            this.weapon = Context.game.add.sprite(0, 0, playerName + '1'); 
+        if (playerType != 0) {
+            this.weapon = Context.game.add.sprite(0, 0, playerName + '1');
             this.weapon.anchor.set(1.32);
             Context.game.physics.enable(this.weapon, Phaser.Physics.ARCADE);
             this.weapon.body.allowRotation = false;

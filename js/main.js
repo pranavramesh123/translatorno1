@@ -21,9 +21,8 @@ var playerManager, currentPlayer, enemyManager, enemyGroup, cursors;
 function preload() {
     Context.game.load.spritesheet('enemy', 'assets/image/enemy/enemy.png', 32, 32, 10);
     Context.game.load.image('bullet', 'assets/image/player/fireball.png');
-
     // initialize players
-    currentPlayer = new Player('player1', 1);
+    currentPlayer = new Player('player1', 0);
 }
 
 /* create function that register more things for objects */
@@ -117,7 +116,7 @@ function update() {
 
 /* fire function for shooting */
 function fire() {
-    if (Context.game.time.now > Attack.nextFire && Attack.fireBall.countDead() > 0) {
+    if (Context.game.time.now > Attack.nextFire && Attack.fireBall.countDead() > 0&&currentPlayer.state) {
         Attack.nextFire = Context.game.time.now + Attack.fireRate;
         var bullet = Attack.fireBall.getFirstDead();
         bullet.reset(currentPlayer.player.x - 8, currentPlayer.player.y - 8);
