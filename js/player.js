@@ -110,7 +110,7 @@ var Player = function(name, type) {
         }
     };
     this.addPlayerToWorld = function() {
-        this.player = Context.game.add.sprite(0, 0, gamerName);
+        this.player = Context.game.add.sprite(Context.game.world.centerX, genRandom(Context.height), gamerName);
         for (var i = 0; i < 4; i++) {
             healthbar.push(Context.game.add.image(i * 40, 0, 'heart'));
         }
