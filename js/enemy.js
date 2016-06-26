@@ -92,7 +92,13 @@ function hitEnemy(player, enemy) {
     currentPlayer.reduceHP(30);
 }
 
-function killEnemy(fireBall, enemy) {
-    enemyManager.getEnemyByPhysicsInstance(enemy).reduceHP(30);
+function killEnemyBall(fireBall, enemies) {
+    enemies.kill();
     fireBall.kill();
+    enemyManager.pushEnemy(new Enemy());
+}
+
+function killEnemyKnife(knife, enemies) {
+    enemies.kill();
+    enemyManager.pushEnemy(new Enemy());
 }

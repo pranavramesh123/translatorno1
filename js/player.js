@@ -36,30 +36,50 @@ var PlayerManager = function() {
 /*
  * A class that make a new player to the game
  */
-var Player = function(name) {
+var Player = function(name, type) {
     // initialize player's name and add it to the game object
     var playerName = name;
     var health = 200;
+    var playerType = type;
 
     this.player = null;
-    Context.game.load.image(name, 'assets/image/player/player1left.png');
+    this.weapon = null;
+    if (type == 0) {
+        Context.game.load.image(name, 'assets/image/player/gunPlayer.png');
+    } else {
+        Context.game.load.image(name, 'assets/image/player/knifePlayer.png');
+        Context.game.load.image(name + '1', 'assets/image/player/knife.png');
+    }
 
     this.getName = function() {
         return playerName;
+    };
+
+    this.getType = function() {
+        return playerType;
     };
 
     this.reduceHP = function(damage) {
         health -= damage;
         if (health <= 0) {
             this.player.kill();
+            if (this.weapon != null) {
+                this.weapon.kill();
+            }
         }
     };
 
     this.addPlayerToWorld = function() {
-        this.player = Context.game.add.sprite(0, 0, playerName);
+        this.player = Context.game.add.sprite(20, 70, playerName);
+        if (playerType != 0 ) { 
+            this.weapon = Context.game.add.sprite(0, 0, playerName + '1'); 
+            this.weapon.anchor.set(1.32);
+            Context.game.physics.enable(this.weapon, Phaser.Physics.ARCADE);
+            this.weapon.body.allowRotation = false;
+            this.weapon.body.collideWorldBounds = true;
+        }
         this.player.anchor.set(0.5);
         Context.game.physics.enable(this.player, Phaser.Physics.ARCADE);
-        this.player.body.allowRotation = false;
         this.player.body.collideWorldBounds = true;
     };
 
