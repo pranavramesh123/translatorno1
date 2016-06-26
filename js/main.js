@@ -3,7 +3,7 @@ var Context = {
     width: 800,
     height: 500
 };
-var playerManager, currentPlayer, ememyManager, cursors;
+var playerManager, currentPlayer, ememies, cursors;
 // preload process for main index
 window.onload = function() {
     // field for game object
@@ -22,12 +22,6 @@ function preload() {
     playerManager.pushPlayer(currentPlayer);
 
     Context.game.load.start();
-
-    enemyManager = new EnemyManager();
-    for (var i = 0; i < 10; i++) {
-        enemyManager.pushEnemy(new Enemy());
-    }
-    enemyManager.addEnemiessToWorld();
 }
 
 function create() {
@@ -35,10 +29,17 @@ function create() {
     Context.game.physics.startSystem(Phaser.Physics.ARCADE);
     playerManager.addPlayersToWorld();
     cursors = Context.game.input.keyboard.createCursorKeys();
+
+    enemies = Context.game.add.group();
+    enemies.enableBody = true;
+
+    for (var i = 0; i < 10; i++) {
+        createEnemy();
+    }
 }
 
 function update() {
-    Context.game.physics.arcade.collide(currentPlayer.player);
+    Context.game.physics.arcade.overlap(currentPlayer.player, enemies, hitEnemy, null, this);
     //  Reset the players velocity (movement)
     currentPlayer.player.body.velocity.x = 0;
     currentPlayer.player.body.velocity.y = 0;
@@ -99,12 +100,21 @@ var PlayerManager = function() {
  */
 var Player = function(name) {
     // initialize player's name and add it to the game object
-    var playerName = name;
+    var playerName = name,
+    health = 100;
+
     this.player = null;
     Context.game.load.image(name, 'assets/image/player/player1left.png');
 
     this.getName = function() {
         return playerName;
+    };
+
+    this.reduceHP = function(damage){
+      health -= damage;
+      if(health<=0){
+        currentPlayer.player.kill();
+      }
     };
 
     this.addPlayerToWorld = function() {
@@ -119,42 +129,15 @@ var genRandom = function(length) {
     return Math.floor(Math.random() * (length - 32)) + 32;
 };
 
-var EnemyManager = function() {
-    var list = [];
-
-    function pushEnemy(enemy) {
-        list.push(enemy);
-    }
-
-    function removeEnemy() {
-        list.remove(enemy);
-    }
-
-    function update() {}
-
-    function addEnemiesToWorld() {
-        for (var i = 0; i < list.length; i++) {
-            list[i].addEnemyToWorld();
-        }
-    }
-
-    return {
-        pushEnemy: pushEnemy,
-        removeEnemy: removeEnemy,
-        addEnemiessToWorld: addEnemiesToWorld,
-        update: update
-    };
-};
-
-var Enemy = function() {
-    this.enemy = null;
-
-    this.addEnemyToWorld = function() {
-        this.enemy = Context.game.add.sprite(genRandom(Context.width), genRandom(Context.height), 'enemy');
-        this.enemy.scale.setTo(2,2);
-        this.enemy.animations.add('idle');
-        this.enemy.animations.play('idle', 10, true);
-        Context.game.physics.arcade.enable(this.enemy);
-        this.enemy.body.collideWorldBounds = true;
-    };
-};
+function createEnemy(){
+  var enemy = enemies.create(genRandom(Context.width), genRandom(Context.height), 'enemy');
+  Context.game.physics.arcade.enable(enemy);
+  enemy.scale.setTo(2, 2);
+  enemy.animations.add('idle');
+  enemy.animations.play('idle', 10, true);
+}
+function hitEnemy(player, enemies){
+      enemies.kill();
+      currentPlayer.reduceHP(30);
+      createEnemy();
+}
