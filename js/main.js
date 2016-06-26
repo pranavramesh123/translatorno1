@@ -71,8 +71,9 @@ var PlayerManager = function() {
         list.push(player);
     }
 
-    function removePlayer() {
+    function removePlayer(player) {
         list.remove(player);
+        player.player.kill();
     }
 
     function update() {
