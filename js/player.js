@@ -117,7 +117,7 @@ var Player = function(name, type) {
             Context.game.physics.enable(this.weapon, Phaser.Physics.ARCADE);
             this.weapon.body.allowRotation = false;
             this.weapon.body.collideWorldBounds = true;
-            this.weapon.body.setSize(50, 300, 300, 300)
+            this.weapon.body.setSize(50, 300, 300, 300);
         }
         this.player.anchor.set(0.5);
         Context.game.physics.enable(this.player, Phaser.Physics.ARCADE);

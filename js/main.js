@@ -57,6 +57,7 @@ function create() {
     for (var i = 0; i < 10; i++) {
         enemyManager.pushEnemy(new Enemy());
     }
+    currentPlayer.addPlayerToWorld();
     playerManager.addPlayersToWorld();
 
     audio = Context.game.add.audio('audio');
