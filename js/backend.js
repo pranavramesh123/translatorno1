@@ -125,22 +125,22 @@ function updatePlayerStatus(roomName,playerName,x,y,health){
 function getRoomStatus(roomName){
 	var segmentRef = ref.child(roomName);
 	segmentRef.on("value", function(snapshot) {
-	  //console.log(snapshot.val()); 
+	  var unique = snapshot.val();
+	  console.log(unique);
 	  return snapshot.val();
 	}, function (errorObject) {
 	  //console.log("Then read failed: " + errorObject.code);
 	  return null;
 	});
+	return null;
 }
 function getRoomSize(roomName){
 	var segmentRef = ref.child(roomName);
 	segmentRef.on("value", function(snapshot) {
-	  //console.log(snapshot.val()); 
 	  var size=0;
 	  for(i in snapshot.val()) size++;
 	  return size;
 	}, function (errorObject) {
-	  //console.log("Then read failed: " + errorObject.code);
 	  return 0;
 	});
 	return 0;
