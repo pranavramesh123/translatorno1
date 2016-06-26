@@ -28,7 +28,6 @@ function preload() {
     currentPlayer = new Player('me', false);
     for (var i = 1; i < 4; i++) {
         var player = new Player(i, true);
-        if (i == 4) { player.kill(); }
         playerManager.pushPlayer(player);
     }
 }
@@ -58,6 +57,7 @@ function create() {
     }
     currentPlayer.addPlayerToWorld();
     playerManager.addPlayersToWorld();
+    playerManager.getItem(2).kill();
 
     audio = Context.game.add.audio('audio');
     audio.allowMultiple = true;
