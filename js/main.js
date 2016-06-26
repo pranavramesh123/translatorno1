@@ -28,8 +28,6 @@ function preload() {
     currentPlayer = new Player('me', false);
     for (var i = 0; i < 3; i++) {
         var player = new Player(i, true);
-        player.player.x = -10;
-        player.player.y = -10;
         playerManager.pushPlayer(player);
     }
 }
@@ -77,8 +75,8 @@ function update() {
             for (var i = 0; i < listing.length; i++) {
                 if (listing[i] == playerName) continue;
                 var player = playerManager.getItem(i);
-                player.body.x = listing[i].positionX;
-                player.body.y = listing[i].positionY;
+                player.x = listing[i].positionX;
+                player.y = listing[i].positionY;
                 if (listing[i].health <= 0) {
                     player.kill();
                 }

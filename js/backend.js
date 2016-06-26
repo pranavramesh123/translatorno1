@@ -113,9 +113,9 @@ function updatePlayerStatus(roomName,playerName,x,y,health){
 	var roomRef = ref.child(roomName);
 	roomRef.once("value", function(snapshot) {
 	  if(snapshot.hasChild(playerName) == false){
-		console.log('Cannot updatePlayerStatus: room/playerName DNE');
+		//console.log('Cannot updatePlayerStatus: room/playerName DNE');
 	  }else{
-	  	console.log('updating Player status');
+	  	//console.log('updating Player status');
 		var playerRef = ref.child(roomName+'/'+playerName);
 		playerRef.update({'positionX':x});
 		playerRef.update({'positionY':x});
@@ -126,12 +126,12 @@ function updatePlayerStatus(roomName,playerName,x,y,health){
 function getRoomStatus(roomName){
 	var segmentRef = ref.child(roomName);
 	segmentRef.on("value", function(snapshot) {
-	  console.log(snapshot.val()); 
+	  //console.log(snapshot.val()); 
 	  roomSize=0;
 	  for(i in snapshot.val()) roomSize++;
 	  return snapshot.val();
 	}, function (errorObject) {
-	  console.log("Then read failed: " + errorObject.code);
+	  //console.log("Then read failed: " + errorObject.code);
 	  return null;
 	});
 }
