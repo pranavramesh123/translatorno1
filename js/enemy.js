@@ -89,9 +89,16 @@ function genRandom(length) {
 }
 
 function hitEnemy(player, enemy) {
+  function resetCollison(){
+    player.hasCollided = false;
+  }
+  if(!player.hasCollided){
+    player.hasCollided =true;
     enemyManager.getEnemyByPhysicsInstance(enemy).reduceHP(30);
     currentPlayer.reduceHP(30);
+    Context.game.time.events.add(Phaser.Timer.SECOND * 1, resetCollison, this);
     audio.play('boss hit');
+  }
 }
 
 function killEnemyBall(fireBall, enemies) {
