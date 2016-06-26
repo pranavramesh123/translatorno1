@@ -48,7 +48,8 @@ function createRoom(roomName,playerName){
 		var newPlayerDetail = {
 			'positionX': 0,
 			'positionY': 0,
-			'health': 4
+			'health': 4,
+			'click':false
 		};
 		var newPlayer = {};
 		newPlayer[playerName] = newPlayerDetail;
@@ -69,7 +70,8 @@ function addPlayer(roomName,playerName){
 		var newPlayerDetail = {
 			'positionX': 0,
 			'positionY': 0,
-			'health': 4
+			'health': 4,
+			'click':false
 		};
 		var newPlayer = {};
 		newPlayer[playerName] = newPlayerDetail;
@@ -109,7 +111,7 @@ function deleteAllRoom(){
 	});
 }
 
-function updatePlayerStatus(roomName,playerName,x,y,health){
+function updatePlayerStatus(roomName,playerName,x,y,health,clicked){
 	var roomRef = ref.child(roomName);
 	roomRef.once("value", function(snapshot) {
 	  if(snapshot.hasChild(playerName) == false){
@@ -120,6 +122,7 @@ function updatePlayerStatus(roomName,playerName,x,y,health){
 		playerRef.update({'positionX':x});
 		playerRef.update({'positionY':y});
 		playerRef.update({'health':health});
+		playerRef.update({'click':clicked});
 	  }
 	});
 }
