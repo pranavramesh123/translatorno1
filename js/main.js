@@ -1,6 +1,6 @@
 // main field for game object
 var Context = {
-    game: new Phaser.Game(screen.width - 50, screen.height - 200, Phaser.CANVAS, 'Ultimate Fighting', {
+    game: new Phaser.Game(screen.width - 50, screen.height - 200, Phaser.CANVAS, 'game', {
         preload: preload,
         create: create,
         update: update
@@ -11,7 +11,7 @@ var Context = {
 // information of fireball attack
 var Attack = {
         fireBall: null,
-        fireRate: 100,
+        fireRate: 500,
         nextFire: 0
     };
     // fields for players
@@ -94,120 +94,4 @@ function fire() {
         bullet.reset(currentPlayer.player.x - 8, currentPlayer.player.y - 8);
         Context.game.physics.arcade.moveToPointer(bullet, 300);
     }
-}
-
-/*
- * A class that manage all players in the game
- */
-var PlayerManager = function() {
-    var list = [];
-
-    function pushPlayer(player) {
-        list.push(player);
-    }
-
-    function removePlayer(player) {
-        list.remove(player);
-        player.player.kill();
-    }
-
-    function update() {
-        for (var player in list) {
-            //player.update();
-        }
-    }
-
-    function addPlayersToWorld() {
-        for (var i = 0; i < list.length; i++) {
-            list[i].addPlayerToWorld();
-        }
-    }
-
-    return {
-        pushPlayer: pushPlayer,
-        removePlayer: removePlayer,
-        addPlayersToWorld: addPlayersToWorld,
-        update: update
-    };
-};
-
-/*
- * A class that make a new player to the game
- */
-var Player = function(name) {
-    // initialize player's name and add it to the game object
-    var playerName = name;
-    var health = 100;
-
-    this.player = null;
-    Context.game.load.image(name, 'assets/image/player/player1left.png');
-
-    this.getName = function() {
-        return playerName;
-    };
-
-    this.reduceHP = function(damage) {
-        health -= damage;
-        if (health <= 0) {
-            this.player.kill();
-        }
-    };
-
-    this.addPlayerToWorld = function() {
-        this.player = Context.game.add.sprite(0, 0, playerName);
-        this.player.anchor.set(0.5);
-        Context.game.physics.enable(this.player, Phaser.Physics.ARCADE);
-        this.player.body.allowRotation = false;
-        this.player.body.collideWorldBounds = true;
-    };
-
-};
-
-function EnemyManager() {
-    var list = [];
-
-    function pushEnemy(enemy) {
-        enemy.spawnEnemy();
-        list.push(enemy);
-    }
-
-    function removeEnemy(enemy) {
-        list.remove(enemy);
-        enemy.enemy.kill();
-    }
-
-    function update() {}
-
-    return {
-        pushEnemy: pushEnemy,
-        removeEnemy: removeEnemy,
-        update: update
-    };
-}
-
-function Enemy() {
-    var health = 50;
-    this.enemy = null;
-    this.spawnEnemy = function() {
-        this.enemy = enemyGroup.create(genRandom(Context.width), genRandom(Context.height), 'enemy');
-        this.enemy.scale.setTo(2, 2);
-        this.enemy.animations.add('idle');
-        this.enemy.animations.play('idle', 10, true);
-    };
-}
-
-function genRandom(length) {
-    return Math.floor(Math.random() * (length - 32)) + 32;
-}
-
-function hitEnemy(player, enemy) {
-    enemy.kill();
-    currentPlayer.reduceHP(30);
-    enemyManager.pushEnemy(new Enemy());
-}
-
-function killEnemy(fireBall, enemies) {
-    enemies.kill();
-    fireBall.kill();
-    enemyManager.pushEnemy(new Enemy());
 }
