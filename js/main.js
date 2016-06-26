@@ -5,8 +5,8 @@ var Context = {
         create: create,
         update: update
     }),
-    width: 800,
-    height: 500
+    width: screen.width-50,
+    height: screen.height-200
 };
 // information of fireball attack
 var Attack = {
@@ -68,6 +68,8 @@ function update() {
     if (Context.game.input.activePointer.isDown) {
         fire();
     }
+
+    enemyManager.update();
 
     // player position
     if (cursors.left.isDown) {
