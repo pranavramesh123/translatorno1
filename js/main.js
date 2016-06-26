@@ -1,22 +1,29 @@
 // main field for game object
 var Context = {
-    game: new Phaser.Game(screen.width - 50, screen.height - 200, Phaser.CANVAS, 'Ultimate Fighting', { preload: preload, create: create, update: update}),
+    game: new Phaser.Game(screen.width - 50, screen.height - 200, Phaser.CANVAS, 'Ultimate Fighting', {
+        preload: preload,
+        create: create,
+        update: update
+    }),
     width: 800,
     height: 500
 };
 // information of fireball attack
 var Attack = {
-    fireBall: null,
-    fireRate: 100,
-    nextFire: 0
-}
-// fields for players
-var playerManager, currentPlayer, ememies, cursors; 
+        fireBall: null,
+        fireRate: 100,
+        nextFire: 0
+    };
+    // fields for players
+var playerManager, currentPlayer, enemyManager, enemyGroup, cursors;
 
 /* preload function that initializes graphics */
 function preload() {
     Context.game.load.spritesheet('enemy', 'assets/image/enemy/enemy.png', 32, 32, 10);
     Context.game.load.image('bullet', 'assets/image/player/fireball.png');
+
+    // initialize players
+    currentPlayer = new Player('player1');
 }
 
 /* create function that register more things for objects */
@@ -35,41 +42,40 @@ function create() {
     Attack.fireBall.setAll('outOfBoundsKill', true);
 
     // enemies attributes
-    enemies = Context.game.add.group();
-    enemies.enableBody = true;
-    for (var i = 0; i < 10; i++) {
-        createEnemy();
-    }
+    enemyManager = new EnemyManager();
+    enemyGroup = Context.game.add.group();
+    enemyGroup.enableBody = true;
 
-    // initialize players
+    for (var i = 0; i < 10; i++) {
+        enemyManager.pushEnemy(new Enemy());
+    }
     playerManager = new PlayerManager();
-    currentPlayer = new Player('player1');
     playerManager.pushPlayer(currentPlayer);
     playerManager.addPlayersToWorld();
 }
 
+
 /* udpate function that refresh latest progress */
 function update() {
-    Context.game.physics.arcade.overlap(currentPlayer.player, enemies, hitEnemy, null, this);
-    Context.game.physics.arcade.collide(currentPlayer.player, enemies);
+    Context.game.physics.arcade.overlap(currentPlayer.player, enemyGroup, hitEnemy, null, this);
     //  Reset the players velocity (movement)
     currentPlayer.player.body.velocity.x = 0;
     currentPlayer.player.body.velocity.y = 0;
     currentPlayer.player.rotation = Context.game.physics.arcade.angleToPointer(currentPlayer.player);
-    
+
     // fire ball activation
-    if (Context.game.input.activePointer.isDown){
+    if (Context.game.input.activePointer.isDown) {
         fire();
     }
 
     // player position
-    if (cursors.left.isDown){
+    if (cursors.left.isDown) {
         //  Move to the left
         currentPlayer.player.body.velocity.x = -150;
-    } else if (cursors.right.isDown){
+    } else if (cursors.right.isDown) {
         //  Move to the right
-       currentPlayer.player.body.velocity.x = 150;
-    } 
+        currentPlayer.player.body.velocity.x = 150;
+    }
     if (cursors.up.isDown) {
         // Move up
         currentPlayer.player.body.velocity.y = -150;
@@ -139,9 +145,9 @@ var Player = function(name) {
         return playerName;
     };
 
-    this.reduceHP = function(damage){
+    this.reduceHP = function(damage) {
         health -= damage;
-        if(health <= 0){
+        if (health <= 0) {
             this.player.kill();
         }
     };
@@ -156,20 +162,45 @@ var Player = function(name) {
 
 };
 
-function genRandom(length) {
-    return Math.floor(Math.random() * (length - 32)) + 32;
-};
+function EnemyManager() {
+    var list = [];
 
-function createEnemy(){
-  var enemy = enemies.create(genRandom(Context.width), genRandom(Context.height), 'enemy');
-  Context.game.physics.arcade.enable(enemy);
-  enemy.scale.setTo(2, 2);
-  enemy.animations.add('idle');
-  enemy.animations.play('idle', 10, true);
+    function pushEnemy(enemy) {
+        enemy.spawnEnemy();
+        list.push(enemy);
+    }
+
+    function removeEnemy(enemy) {
+        list.remove(enemy);
+        enemy.enemy.kill();
+    }
+
+    function update() {}
+
+    return {
+        pushEnemy: pushEnemy,
+        removeEnemy: removeEnemy,
+        update: update
+    };
 }
 
-function hitEnemy(player, enemies){
-      enemies.kill();
-      currentPlayer.reduceHP(30);
-      createEnemy();
+function Enemy() {
+    var health = 50;
+    this.enemy = null;
+    this.spawnEnemy = function() {
+        this.enemy = enemyGroup.create(genRandom(Context.width), genRandom(Context.height), 'enemy');
+        this.enemy.scale.setTo(2, 2);
+        this.enemy.animations.add('idle');
+        this.enemy.animations.play('idle', 10, true);
+    };
+}
+
+function genRandom(length) {
+    return Math.floor(Math.random() * (length - 32)) + 32;
+}
+
+function hitEnemy(player, enemy) {
+    enemy.kill();
+    currentPlayer.reduceHP(30);
+    enemyManager.pushEnemy(new Enemy());
 }
