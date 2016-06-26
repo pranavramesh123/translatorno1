@@ -6,12 +6,12 @@ function EnemyManager() {
         list.push(enemy);
     }
 
-    function getEnemyByPhysicsInstance(enemy){
-      for (var i = 0; i < list.length; i++) {
-          if (list[i].enemy === enemy) {
-              return list[i];
-          }
-      }
+    function getEnemyByPhysicsInstance(enemy) {
+        for (var i = 0; i < list.length; i++) {
+            if (list[i].enemy === enemy) {
+                return list[i];
+            }
+        }
     }
 
     function update() {
@@ -89,16 +89,16 @@ function genRandom(length) {
 }
 
 function hitEnemy(player, enemy) {
-  function resetCollison(){
-    player.hasCollided = false;
-  }
-  if(!player.hasCollided){
-    player.hasCollided =true;
-    enemyManager.getEnemyByPhysicsInstance(enemy).reduceHP(30);
-    currentPlayer.reduceHP(30);
-    Context.game.time.events.add(Phaser.Timer.SECOND * 1, resetCollison, this);
-    audio.play('boss hit');
-  }
+    function resetCollison() {
+        player.hasCollided = false;
+    }
+    if (!player.hasCollided) {
+        player.hasCollided = true;
+        enemyManager.getEnemyByPhysicsInstance(enemy).reduceHP(30);
+        currentPlayer.reduceHP(30);
+        Context.game.time.events.add(Phaser.Timer.SECOND * 1, resetCollison, this);
+        audio.play('boss hit');
+    }
 }
 
 function killEnemyBall(fireBall, enemies) {
@@ -106,6 +106,8 @@ function killEnemyBall(fireBall, enemies) {
     fireBall.kill();
     enemyManager.pushEnemy(new Enemy());
     audio.play('ping');
+    currentPlayer.scoreboard += 100;
+    currentPlayer.updateScore();
 }
 
 function killEnemyKnife(knife, enemies) {

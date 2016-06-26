@@ -17,7 +17,7 @@ var PlayerManager = function() {
     }
 
     function removePlayer(player) {
-        list.splice(list.indexOf(player),1);
+        list.splice(list.indexOf(player), 1);
     }
 
     function update() {
@@ -50,16 +50,37 @@ var Player = function(name, type) {
     var health = 150;
     var healthbar = [];
     var playerType = type;
+
+    var style = {
+        font: "65px Arial",
+        fill: "#ff0044",
+        align: "center"
+    };
+
+    var styleScore = {
+        font: "40px Arial",
+        fill: "#ff0044",
+        align: "center"
+    };
+
+    this.scoreboard = 0;
     this.alive = true;
     this.lifes = 4;
     this.player = null;
     this.weapon = null;
+
+    var tagScoreboard = Context.game.add.text(Context.width - 250, 0, 'Score: ' + this.scoreboard, styleScore);
+
     Context.game.load.image('heart', 'assets/image/player/heart.png');
     if (type == 0) {
         Context.game.load.image(name, 'assets/image/player/gunPlayer.png');
     } else {
         Context.game.load.image(name, 'assets/image/player/knifePlayer.png');
         Context.game.load.image(name + '1', 'assets/image/player/knife.png');
+    }
+
+    this.updateScore = function() {
+        tagScoreboard.setText('Score: ' + this.scoreboard);
     }
 
     this.getName = function() {
@@ -72,16 +93,15 @@ var Player = function(name, type) {
 
     this.reduceHP = function(damage) {
         health -= damage;
-        if(healthbar.length>0){
-          healthbar.pop().kill();
+        if (healthbar.length > 0) {
+            healthbar.pop().kill();
         }
         if (health <= 0) {
             playerManager.removePlayer(currentPlayer);
             this.alive = false;
             this.player.kill();
             var text = "You died.";
-            var style = { font: "65px Arial", fill: "#ff0044", align: "center" };
-            var t = Context.game.add.text(Context.game.world.centerX-150, 0, text, style);
+            var t = Context.game.add.text(Context.game.world.centerX - 150, 0, text, style);
 
             deletePlayer(roomName, playerName);
             if (this.weapon != null) {
@@ -91,11 +111,11 @@ var Player = function(name, type) {
     };
     this.addPlayerToWorld = function() {
         this.player = Context.game.add.sprite(0, 0, gamerName);
-        for(var i=0;i<4;i++){
-          healthbar.push(Context.game.add.image(i*40,0,'heart'));
+        for (var i = 0; i < 4; i++) {
+            healthbar.push(Context.game.add.image(i * 40, 0, 'heart'));
         }
-        if (playerType != 0 ) { 
-            this.weapon = Context.game.add.sprite(18, 18, gamerName + '1'); 
+        if (playerType != 0) {
+            this.weapon = Context.game.add.sprite(18, 18, gamerName + '1');
             this.weapon.anchor.set(1.32);
             Context.game.physics.enable(this.weapon, Phaser.Physics.ARCADE);
             this.weapon.body.allowRotation = false;
