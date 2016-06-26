@@ -126,7 +126,6 @@ function getRoomStatus(roomName){
 	var segmentRef = ref.child(roomName);
 	segmentRef.on("value", function(snapshot) {
 	  special_key_pair = snapshot.val();
-	  console.log('YES');
 	  return snapshot.val();
 	}, function (errorObject) {
 	  //console.log("Then read failed: " + errorObject.code);

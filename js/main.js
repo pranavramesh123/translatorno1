@@ -1,12 +1,12 @@
 // main field for game object
 var Context = {
-    game: new Phaser.Game(screen.width - 50, screen.height - 200, Phaser.CANVAS, 'game', {
+    game: new Phaser.Game(800, 600, Phaser.CANVAS, 'game', {
         preload: preload,
         create: create,
         update: update
     }),
-    width: screen.width-50,
-    height: screen.height-200
+    width: 800,
+    height: 600
 };
 // information of fireball attack
 var Attack = {
@@ -81,7 +81,6 @@ function update() {
                 player.y = special_key_pair[key]['positionY'];
                 if (special_key_pair[key]['health'] <= 0) {
                     player.kill();
-                    console.log('the person die');
                 }
             }
         }
