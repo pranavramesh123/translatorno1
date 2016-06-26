@@ -63,12 +63,12 @@ function Enemy() {
     this.updatePosition = function() {
         this.enemy.x += speed * directionX;
         this.enemy.y += speed * directionY;
-        if (this.enemy.x <= 0) {
+        if (this.enemy.x <= -38) {
             directionX = 1;
         } else if (this.enemy.x >= Context.width) {
             directionX = -1;
         }
-        if (this.enemy.y <= 0) {
+        if (this.enemy.y <= -38) {
             directionY = 1;
         } else if (this.enemy.y >= Context.height) {
             directionY = -1;
