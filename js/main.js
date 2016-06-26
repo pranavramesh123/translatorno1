@@ -15,12 +15,13 @@ var Attack = {
     nextFire: 0
 };
 // fields for players
-var playerManager, currentPlayer, enemyManager, enemyGroup, cursors;
+var playerManager, currentPlayer, enemyManager, enemyGroup, cursors, audio;
 
 /* preload function that initializes graphics */
 function preload() {
     Context.game.load.spritesheet('enemy', 'assets/image/enemy/enemy.png', 32, 32, 10);
     Context.game.load.image('bullet', 'assets/image/player/fireball.png');
+    Context.game.load.audio('audio', 'assets/audio/fx_mixdown.ogg');
     // initialize players
     currentPlayer = new Player('player1', 0);
 }
@@ -53,6 +54,12 @@ function create() {
     playerManager = new PlayerManager();
     playerManager.pushPlayer(currentPlayer);
     playerManager.addPlayersToWorld();
+
+    audio = Context.game.add.audio('audio');
+    audio.allowMultiple = true;
+    audio.addMarker('boss hit', 3, 0.5);
+    audio.addMarker('ping', 10, 1.0);
+    audio.addMarker('death', 12, 4.2);
 }
 
 

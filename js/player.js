@@ -80,13 +80,14 @@ var Player = function(name, type) {
         }
     };
     this.addPlayerToWorld = function() {
-        this.player = Context.game.add.sprite(20, 70, playerName);
-        if (playerType != 0) {
-            this.weapon = Context.game.add.sprite(0, 0, playerName + '1');
+        this.player = Context.game.add.sprite(0, 0, playerName);
+        if (playerType != 0 ) { 
+            this.weapon = Context.game.add.sprite(18, 18, playerName + '1'); 
             this.weapon.anchor.set(1.32);
             Context.game.physics.enable(this.weapon, Phaser.Physics.ARCADE);
             this.weapon.body.allowRotation = false;
             this.weapon.body.collideWorldBounds = true;
+            this.weapon.body.setSize(50, 300, 300, 300)
         }
         this.player.anchor.set(0.5);
         Context.game.physics.enable(this.player, Phaser.Physics.ARCADE);

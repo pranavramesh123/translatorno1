@@ -40,6 +40,7 @@ function Enemy() {
         if (health <= 0) {
             this.enemy.kill();
             enemyManager.pushEnemy(new Enemy());
+            audio.play('death');
         }
     };
 
@@ -90,15 +91,18 @@ function genRandom(length) {
 function hitEnemy(player, enemy) {
     enemyManager.getEnemyByPhysicsInstance(enemy).reduceHP(30);
     currentPlayer.reduceHP(30);
+    audio.play('boss hit');
 }
 
 function killEnemyBall(fireBall, enemies) {
     enemies.kill();
     fireBall.kill();
     enemyManager.pushEnemy(new Enemy());
+    audio.play('ping');
 }
 
 function killEnemyKnife(knife, enemies) {
     enemies.kill();
     enemyManager.pushEnemy(new Enemy());
+    audio.play('ping');
 }
