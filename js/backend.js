@@ -1,17 +1,17 @@
 var baseURL = "https://enghack2016.firebaseio.com/rooms";
 var ref = new Firebase(baseURL);
-function hasRoom(roomName,playerName){  
+function hasRoom(roomName,playerName){
 	ref.once("value", function(snapshot) {
 	  if(snapshot.hasChild(roomName) == true){
 	  	console.log(snapshot.hasChild(roomName));
 	  	console.log('room exist');
 	  	hasPlayer(roomName,playerName);
-	  }else{ 
+	  }else{
 	  	console.log('room free');
 	  	createRoom(roomName,playerName);
  		login_status(false);
 	  }
-	}); 
+	});
 }
 function hasPlayer(roomName,playerName){
 	console.log('hasPlayer function called');
@@ -22,7 +22,7 @@ function hasPlayer(roomName,playerName){
 		alert('player with the same name exist in this room');
 		document.getElementById('room-name').value = '';
 	  	document.getElementById('player-name').value = '';
-	  }else{ 
+	  }else{
 	  	console.log('player free');
 	  	addPlayer(roomName,playerName);
  		login_status(false);
@@ -33,7 +33,7 @@ function createRoom(roomName,playerName){
 	ref.once("value", function(snapshot) {
 	  if(snapshot.hasChild(roomName) == true){
 	  		return false;
-	  }else{ 
+	  }else{
 	  	console.log('creating Room: ' + roomName);
 		var newPlayerDetail = {
 			'positionX': 0,
@@ -66,7 +66,7 @@ function addPlayer(roomName,playerName){
 		usersRef.update(newPlayer);
 	  }
 	});
-} 
+}
 
 function deleteRoom(roomName){
 	ref.once("value", function(snapshot) {
@@ -80,7 +80,7 @@ function deleteRoom(roomName){
 	});
 }
 
-function deletePlayer(roomName,playerName){
+function deletePlayer(roomName,playerName){debugger;
 	var roomRef = ref.child(roomName);
 	roomRef.once("value", function(snapshot) {
 	  if(snapshot.hasChild(playerName) == false){
@@ -93,7 +93,7 @@ function deletePlayer(roomName,playerName){
 	});
 }
 
-function deleteAllRoom(){ 
+function deleteAllRoom(){
 	console.log('All rooms deleted');
 	ref.set({
 		placeholder:'palceholder'
@@ -104,7 +104,7 @@ function updatePlayerStatus(roomName,playerName,x,y,health){
 	var roomRef = ref.child(roomName);
 	roomRef.once("value", function(snapshot) {
 	  if(snapshot.hasChild(playerName) == false){
-		console.log('Cannot updatePlayerStatus: room/playerName DNE');	  	
+		console.log('Cannot updatePlayerStatus: room/playerName DNE');
 	  }else{
 	  	console.log('updating Player status');
 		var playerRef = ref.child(roomName+'/'+playerName);

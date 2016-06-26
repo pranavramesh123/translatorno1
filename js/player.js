@@ -53,6 +53,7 @@ var Player = function(name, type) {
 
     this.player = null;
     this.weapon = null;
+    Context.game.load.image('health', 'assets/image/player/heart.png');
     if (type == 0) {
         Context.game.load.image(name, 'assets/image/player/gunPlayer.png');
     } else {
@@ -74,6 +75,11 @@ var Player = function(name, type) {
             playerManager.removePlayer(currentPlayer);
             this.alive = false;
             this.player.kill();
+            var text = "You died.";
+            var style = { font: "65px Arial", fill: "#ff0044", align: "center" };
+            var t = Context.game.add.text(Context.game.world.centerX-150, 0, text, style);
+            alert(roomName + ' ' + playerName );
+            deletePlayer(roomName,playerName);
             if (this.weapon != null) {
                 this.weapon.kill();
             }
@@ -81,8 +87,8 @@ var Player = function(name, type) {
     };
     this.addPlayerToWorld = function() {
         this.player = Context.game.add.sprite(0, 0, playerName);
-        if (playerType != 0 ) { 
-            this.weapon = Context.game.add.sprite(18, 18, playerName + '1'); 
+        if (playerType != 0 ) {
+            this.weapon = Context.game.add.sprite(18, 18, playerName + '1');
             this.weapon.anchor.set(1.32);
             Context.game.physics.enable(this.weapon, Phaser.Physics.ARCADE);
             this.weapon.body.allowRotation = false;
