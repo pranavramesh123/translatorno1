@@ -91,7 +91,7 @@ var Player = function(name, bot) {
             this.player.kill();
             var text = "You died.";
             var t = Context.game.add.text(Context.game.world.centerX - 150, 0, text, style);
-            deletePlayer(roomName, key);
+            deletePlayer(roomName, playerName);
         }
     };
     this.addPlayerToWorld = function() {
