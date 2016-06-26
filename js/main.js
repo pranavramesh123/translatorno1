@@ -61,7 +61,7 @@ function create() {
     enemyGroup = Context.game.add.group();
     enemyGroup.enableBody = true;
 
-    for (var i = 0; i < 15; i++) {
+    for (var i = 0; i < 17; i++) {
         enemyManager.pushEnemy(new Enemy());
     }
     currentPlayer.addPlayerToWorld();
@@ -98,7 +98,7 @@ function update() {
 
     Context.game.physics.arcade.overlap(currentPlayer.player, enemyGroup, hitEnemy, null, this);
     Context.game.physics.arcade.overlap(Attack.fireBall, enemyGroup, killEnemyBall, null, this);
-    Context.game.physics.arcade.overlap(currentPlayer.player, Attack.fireBall2, currentPlayer.reduceHP, null, this);
+    Context.game.physics.arcade.overlap(Attack.fireBall2, enemyGroup, null, this);
 
     //  Reset the players velocity (movement)
     currentPlayer.player.body.velocity.x = 0;
