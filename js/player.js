@@ -39,7 +39,7 @@ var PlayerManager = function() {
 var Player = function(name) {
     // initialize player's name and add it to the game object
     var playerName = name;
-    var health = 100;
+    var health = 200;
 
     this.player = null;
     Context.game.load.image(name, 'assets/image/player/player1left.png');

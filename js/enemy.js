@@ -6,40 +6,51 @@ function EnemyManager() {
         list.push(enemy);
     }
 
-    function removeEnemy(enemy) {
-        list.remove(enemy);
-        enemy.enemy.kill();
+    function getEnemyByPhysicsInstance(enemy){
+      for (var i = 0; i < list.length; i++) {
+          if (list[i].enemy === enemy) {
+              return list[i];
+          }
+      }
     }
 
     function update() {
-      for(var i=0; i<list.length;i++){
-        list[i].updatePosition();
-      }
+        for (var i = 0; i < list.length; i++) {
+            list[i].updatePosition();
+        }
     }
 
     return {
         pushEnemy: pushEnemy,
-        removeEnemy: removeEnemy,
+        getEnemyByPhysicsInstance: getEnemyByPhysicsInstance,
         update: update
     };
 }
 
 function Enemy() {
     var health = 50,
-    speed = 2,
-    directionX,
-    directionY;
+        speed = 2,
+        directionX,
+        directionY;
 
     this.enemy = null;
+
+    this.reduceHP = function(damage) {
+        health -= damage;
+        if (health <= 0) {
+            this.enemy.kill();
+            enemyManager.pushEnemy(new Enemy());
+        }
+    };
+
     this.spawnEnemy = function() {
-        var posX,posY;
+        var posX, posY;
         directionX = genDirection();
         directionY = genDirection();
-        if(directionX===-1){
-          posX = Context.width+genRandom(Context.width*1/4);
-        }
-        else if(directionX ===1){
-          posX = -genRandom(Context.width*1/4);
+        if (directionX === -1) {
+            posX = Context.width + genRandom(Context.width * 1 / 4);
+        } else if (directionX === 1) {
+            posX = -genRandom(Context.width * 1 / 4);
         }
 
         this.enemy = enemyGroup.create(posX, genRandom(Context.height), 'enemy');
@@ -47,32 +58,29 @@ function Enemy() {
         this.enemy.animations.add('idle');
         this.enemy.animations.play('idle', 10, true);
     };
-    this.updatePosition = function(){
-        this.enemy.x += speed*directionX;
-        this.enemy.y += speed*directionY;
-        if(this.enemy.x<=0){
-          directionX = 1;
+    this.updatePosition = function() {
+        this.enemy.x += speed * directionX;
+        this.enemy.y += speed * directionY;
+        if (this.enemy.x <= 0) {
+            directionX = 1;
+        } else if (this.enemy.x >= Context.width) {
+            directionX = -1;
         }
-        else if(this.enemy.x>=Context.width){
-          directionX = -1;
-        }
-        if(this.enemy.y<=0){
-         directionY = 1;
-        }
-        else if(this.enemy.y>=Context.height){
-          directionY =-1;
+        if (this.enemy.y <= 0) {
+            directionY = 1;
+        } else if (this.enemy.y >= Context.height) {
+            directionY = -1;
         }
     };
 }
 
-function genDirection(){
-  var direction =  Math.round(Math.random());
-  if(direction === 0){
-    return -1;
-  }
-  else{
-    return 1;
-  }
+function genDirection() {
+    var direction = Math.round(Math.random());
+    if (direction === 0) {
+        return -1;
+    } else {
+        return 1;
+    }
 }
 
 function genRandom(length) {
@@ -80,13 +88,11 @@ function genRandom(length) {
 }
 
 function hitEnemy(player, enemy) {
-    enemy.kill();
+    enemyManager.getEnemyByPhysicsInstance(enemy).reduceHP(30);
     currentPlayer.reduceHP(30);
-    enemyManager.pushEnemy(new Enemy());
 }
 
-function killEnemy(fireBall, enemies) {
-    enemies.kill();
+function killEnemy(fireBall, enemy) {
+    enemyManager.getEnemyByPhysicsInstance(enemy).reduceHP(30);
     fireBall.kill();
-    enemyManager.pushEnemy(new Enemy());
 }
