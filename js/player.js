@@ -97,13 +97,14 @@ var Player = function(name, bot) {
     };
     this.addPlayerToWorld = function() {
         this.player = Context.game.add.sprite(Context.game.world.centerX, genRandom(Context.height), gamerName);
-        for (var i = 0; i < 4; i++) {
-            healthbar.push(Context.game.add.image(i * 40, 0, 'heart'));
-        }
-
         this.player.anchor.set(0.5);
         Context.game.physics.enable(this.player, Phaser.Physics.ARCADE);
         this.player.body.collideWorldBounds = true;
+
+        if (bot) return;
+        for (var i = 0; i < 4; i++) {
+            healthbar.push(Context.game.add.image(i * 40, 0, 'heart'));
+        }
     };
 
 };
