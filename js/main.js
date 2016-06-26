@@ -1,7 +1,9 @@
 var Context = {
     game: null,
+    width: 800,
+    height: 500
 };
-var playerManager, currentPlayer, cursors;
+var playerManager, currentPlayer, ememyManager, cursors;
 // preload process for main index
 window.onload = function() {
     // field for game object
@@ -14,10 +16,18 @@ window.onload = function() {
 
 /* a function that preload all necessary graphic */
 function preload() {
-    Context.game.load.image('ground', 'assets/image/background/ground.png');
+    Context.game.load.spritesheet('enemy', 'assets/image/enemy/enemy.png', 32, 32, 10);
     playerManager = new PlayerManager();
     currentPlayer = new Player('player1');
     playerManager.pushPlayer(currentPlayer);
+
+    Context.game.load.start();
+
+    enemyManager = new EnemyManager();
+    for (var i = 0; i < 10; i++) {
+        enemyManager.pushEnemy(new Enemy());
+    }
+    enemyManager.addEnemiessToWorld();
 }
 
 function create() {
@@ -35,13 +45,13 @@ function update() {
 
     currentPlayer.player.rotation = Context.game.physics.arcade.angleToPointer(currentPlayer.player);
     currentPlayer.player.anchor.set(0.5);
-    if (cursors.left.isDown){
+    if (cursors.left.isDown) {
         //  Move to the left
         currentPlayer.player.body.velocity.x = -150;
-    } else if (cursors.right.isDown){
+    } else if (cursors.right.isDown) {
         //  Move to the right
-       currentPlayer.player.body.velocity.x = 150;
-    } 
+        currentPlayer.player.body.velocity.x = 150;
+    }
 
     if (cursors.up.isDown) {
         // Move up
@@ -103,4 +113,48 @@ var Player = function(name) {
         this.player.body.collideWorldBounds = true;
     };
 
+};
+
+var genRandom = function(length) {
+    return Math.floor(Math.random() * (length - 32)) + 32;
+};
+
+var EnemyManager = function() {
+    var list = [];
+
+    function pushEnemy(enemy) {
+        list.push(enemy);
+    }
+
+    function removeEnemy() {
+        list.remove(enemy);
+    }
+
+    function update() {}
+
+    function addEnemiesToWorld() {
+        for (var i = 0; i < list.length; i++) {
+            list[i].addEnemyToWorld();
+        }
+    }
+
+    return {
+        pushEnemy: pushEnemy,
+        removeEnemy: removeEnemy,
+        addEnemiessToWorld: addEnemiesToWorld,
+        update: update
+    };
+};
+
+var Enemy = function() {
+    this.enemy = null;
+
+    this.addEnemyToWorld = function() {
+        this.enemy = Context.game.add.sprite(genRandom(Context.width), genRandom(Context.height), 'enemy');
+        this.enemy.scale.setTo(2,2);
+        this.enemy.animations.add('idle');
+        this.enemy.animations.play('idle', 10, true);
+        Context.game.physics.arcade.enable(this.enemy);
+        this.enemy.body.collideWorldBounds = true;
+    };
 };
