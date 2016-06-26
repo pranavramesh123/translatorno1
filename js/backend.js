@@ -25,9 +25,10 @@ function hasPlayer(roomName,playerName){
 	  	document.getElementById('player-name').value = '';
 	  }else{
 	  	console.log('player Name is free');
-	  	if(getRoomSize >= 4){
-	  		console.log('Room Full');
+	  	if(getRoomSize() >= 4){
 	  		alert('Room Full');
+	  		console.log('Room Full ');
+	  		console.log('Room Full ' + getRoomSize());
 	  		document.getElementById('room-name').value = '';
 		  	document.getElementById('player-name').value = '';
 	  	}
@@ -117,7 +118,7 @@ function updatePlayerStatus(roomName,playerName,x,y,health){
 	  	//console.log('updating Player status');
 		var playerRef = ref.child(roomName+'/'+playerName);
 		playerRef.update({'positionX':x});
-		playerRef.update({'positionY':x});
+		playerRef.update({'positionY':y});
 		playerRef.update({'health':health});
 	  }
 	});
@@ -136,7 +137,7 @@ function getRoomStatus(roomName){
 function getRoomSize(roomName){
 	var segmentRef = ref.child(roomName);
 	segmentRef.on("value", function(snapshot) {
-	  var size=0;
+	  var size = 0;
 	  for(i in snapshot.val()) size++;
 	  return size;
 	}, function (errorObject) {
