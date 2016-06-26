@@ -80,7 +80,7 @@ var Player = function(name, bot) {
         return gamerName;
     };
 
-    this.reduceHP = function(damage) {
+    this.reduceHP = function() {
         if (healthbar.length > 0) {
             healthbar.pop().kill();
             this.lifes--;
