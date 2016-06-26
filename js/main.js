@@ -78,7 +78,7 @@ function update() {
             var player = playerManager.getItem(i);
             player.x = special_key_pair[key]['positionX'];
             player.y = special_key_pair[key]['positionY'];
-            console.log(player.x+'    '+ player.y);
+            console.log(key +' '+i+' '+ special_key_pair[key]['positionX']+' '+special_key_pair[key]['positionY']);
             if (special_key_pair[key]['health'] <= 0) {
                 player.kill();
             }
