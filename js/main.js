@@ -1,59 +1,75 @@
+// main field for game object
 var Context = {
-    game: null,
+    game: new Phaser.Game(screen.width - 50, screen.height - 200, Phaser.CANVAS, 'Ultimate Fighting', { preload: preload, create: create, update: update}),
     width: 800,
     height: 500
 };
-var playerManager, currentPlayer, ememies, cursors;
-// preload process for main index
-window.onload = function() {
-    // field for game object
-    Context.game = new Phaser.Game(800, 500, Phaser.AUTO, '', {
-        preload: preload,
-        create: create,
-        update: update
-    });
-};
+// information of fireball attack
+var Attack = {
+    fireBall: null,
+    fireRate: 100,
+    nextFire: 0
+}
+// fields for players
+var playerManager, currentPlayer, ememies, cursors; 
 
-/* a function that preload all necessary graphic */
+/* preload function that initializes graphics */
 function preload() {
     Context.game.load.spritesheet('enemy', 'assets/image/enemy/enemy.png', 32, 32, 10);
-    playerManager = new PlayerManager();
-    currentPlayer = new Player('player1');
-    playerManager.pushPlayer(currentPlayer);
-
-    Context.game.load.start();
+    Context.game.load.image('bullet', 'assets/image/player/fireball.png');
 }
 
+/* create function that register more things for objects */
 function create() {
     //  We're going to be using physics, so enable the Arcade Physics system
     Context.game.physics.startSystem(Phaser.Physics.ARCADE);
-    playerManager.addPlayersToWorld();
     cursors = Context.game.input.keyboard.createCursorKeys();
+    Context.game.stage.backgroundColor = '#313131';
 
+    // fireball attributes
+    Attack.fireBall = Context.game.add.group();
+    Attack.fireBall.enableBody = true;
+    Attack.fireBall.physicsBodyType = Phaser.Physics.ARCADE;
+    Attack.fireBall.createMultiple(50, 'bullet');
+    Attack.fireBall.setAll('checkWorldBounds', true);
+    Attack.fireBall.setAll('outOfBoundsKill', true);
+
+    // enemies attributes
     enemies = Context.game.add.group();
     enemies.enableBody = true;
-
     for (var i = 0; i < 10; i++) {
         createEnemy();
     }
+
+    // initialize players
+    playerManager = new PlayerManager();
+    currentPlayer = new Player('player1');
+    playerManager.pushPlayer(currentPlayer);
+    playerManager.addPlayersToWorld();
 }
 
+/* udpate function that refresh latest progress */
 function update() {
     Context.game.physics.arcade.overlap(currentPlayer.player, enemies, hitEnemy, null, this);
+    Context.game.physics.arcade.collide(currentPlayer.player, enemies);
     //  Reset the players velocity (movement)
     currentPlayer.player.body.velocity.x = 0;
     currentPlayer.player.body.velocity.y = 0;
-
     currentPlayer.player.rotation = Context.game.physics.arcade.angleToPointer(currentPlayer.player);
-    currentPlayer.player.anchor.set(0.5);
-    if (cursors.left.isDown) {
-        //  Move to the left
-        currentPlayer.player.body.velocity.x = -150;
-    } else if (cursors.right.isDown) {
-        //  Move to the right
-        currentPlayer.player.body.velocity.x = 150;
+    
+    // fire ball activation
+    if (Context.game.input.activePointer.isDown){
+        fire();
     }
 
+    // player position
+    if (cursors.left.isDown){
+        //  Move to the left
+        currentPlayer.player.body.velocity.x = -150;
+    } else if (cursors.right.isDown){
+        //  Move to the right
+       currentPlayer.player.body.velocity.x = 150;
+    } 
     if (cursors.up.isDown) {
         // Move up
         currentPlayer.player.body.velocity.y = -150;
@@ -63,7 +79,19 @@ function update() {
     }
 }
 
+/* fire function for shooting */
+function fire() {
+    if (Context.game.time.now > Attack.nextFire && Attack.fireBall.countDead() > 0) {
+        Attack.nextFire = Context.game.time.now + Attack.fireRate;
+        var bullet = Attack.fireBall.getFirstDead();
+        bullet.reset(currentPlayer.player.x - 8, currentPlayer.player.y - 8);
+        Context.game.physics.arcade.moveToPointer(bullet, 300);
+    }
+}
 
+/*
+ * A class that manage all players in the game
+ */
 var PlayerManager = function() {
     var list = [];
 
@@ -101,8 +129,8 @@ var PlayerManager = function() {
  */
 var Player = function(name) {
     // initialize player's name and add it to the game object
-    var playerName = name,
-    health = 100;
+    var playerName = name;
+    var health = 100;
 
     this.player = null;
     Context.game.load.image(name, 'assets/image/player/player1left.png');
@@ -112,21 +140,23 @@ var Player = function(name) {
     };
 
     this.reduceHP = function(damage){
-      health -= damage;
-      if(health<=0){
-        currentPlayer.player.kill();
-      }
+        health -= damage;
+        if(health <= 0){
+            this.player.kill();
+        }
     };
 
     this.addPlayerToWorld = function() {
-        this.player = Context.game.add.sprite(0, 0, name);
-        Context.game.physics.arcade.enable(this.player);
+        this.player = Context.game.add.sprite(0, 0, playerName);
+        this.player.anchor.set(0.5);
+        Context.game.physics.enable(this.player, Phaser.Physics.ARCADE);
+        this.player.body.allowRotation = false;
         this.player.body.collideWorldBounds = true;
     };
 
 };
 
-var genRandom = function(length) {
+function genRandom(length) {
     return Math.floor(Math.random() * (length - 32)) + 32;
 };
 
@@ -137,6 +167,7 @@ function createEnemy(){
   enemy.animations.add('idle');
   enemy.animations.play('idle', 10, true);
 }
+
 function hitEnemy(player, enemies){
       enemies.kill();
       currentPlayer.reduceHP(30);
