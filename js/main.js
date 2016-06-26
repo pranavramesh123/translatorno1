@@ -52,7 +52,7 @@ function create() {
     enemyGroup = Context.game.add.group();
     enemyGroup.enableBody = true;
 
-    for (var i = 0; i < 12; i++) {
+    for (var i = 0; i < 15; i++) {
         enemyManager.pushEnemy(new Enemy());
     }
     currentPlayer.addPlayerToWorld();
