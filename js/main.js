@@ -143,8 +143,10 @@ function fire() {
 
 /* fire function from enemies */
 function fire2(x, y) {
-       Attack.nextFire = Context.game.time.now + Attack.fireRate;
-       var bullet = Attack.fireBall2.getFirstDead();
-       bullet.reset(x - 8, y - 8);
-       Context.game.physics.arcade.moveToPointer(bullet, 300);
+	if (Context.game.time.now > Attack.nextFire && Attack.fireBall.countDead() > 0 && currentPlayer.alive) {
+        Attack.nextFire = Context.game.time.now + Attack.fireRate;
+        var bullet = Attack.fireBall2.getFirstDead();
+        bullet.reset(x - 8, y - 8);
+        Context.game.physics.arcade.moveToPointer(bullet, 300);
+   }
 }
