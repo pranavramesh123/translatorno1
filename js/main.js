@@ -77,14 +77,11 @@ function update() {
                 i++;
                 if (key == playerName) continue;
                 var player = playerManager.getItem(i);
-                console.log(i);
-                console.log(special_key_pair[key]['positionX']);
-                console.log(special_key_pair[key]['positionY']);
-                console.log(special_key_pair[key]['health']);
                 player.x = special_key_pair[key]['positionX'];
                 player.y = special_key_pair[key]['positionY'];
                 if (special_key_pair[key]['health'] <= 0) {
                     player.kill();
+                    console.log('the person die');
                 }
             }
         }
