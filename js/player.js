@@ -42,7 +42,7 @@ var PlayerManager = function() {
 /*
  * A class that make a new player to the game
  */
-var Player = function(name) {
+var Player = function(name, bot) {
     // initialize player's name and add it to the game object
     var gamerName = name;
     var healthbar = [];
@@ -64,8 +64,11 @@ var Player = function(name) {
     this.lifes = 4;
     this.player = null;
 
-    var tagScoreboard = Context.game.add.text(Context.width - 250, 0, 'Score: ' + this.scoreboard, styleScore);
-
+    var tagScoreboard;
+    if (!bot) {
+        tagScoreboard = Context.game.add.text(Context.width - 250, 0, 'Score: ' + this.scoreboard, styleScore);
+    } 
+    
     Context.game.load.image('heart', 'assets/image/player/heart.png');
     Context.game.load.image(name, 'assets/image/player/gunPlayer.png');
 
