@@ -134,16 +134,10 @@ function getRoomStatus(roomName){
 	});
 	return null;
 }
-function getRoomSize(roomName){
-	var segmentRef = ref.child(roomName);
-	segmentRef.on("value", function(snapshot) {
-	  var size = 0;
-	  for(i in snapshot.val()) size++;
-	  return size;
-	}, function (errorObject) {
-	  return 0;
-	});
-	return 0;
+function getRoomSize(){ 
+	var sum = 0;
+	for(i in special_key_pair) sum++;
+	return sum;
 }
 function getPlayerStatus(roomName,playerName){
 	var segmentRef = ref.child(roomName+'/'+playerName);
