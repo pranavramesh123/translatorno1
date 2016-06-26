@@ -58,6 +58,7 @@ function create() {
 /* udpate function that refresh latest progress */
 function update() {
     Context.game.physics.arcade.overlap(currentPlayer.player, enemyGroup, hitEnemy, null, this);
+    Context.game.physics.arcade.overlap(Attack.fireBall, enemyGroup, killEnemy, null, this);
     //  Reset the players velocity (movement)
     currentPlayer.player.body.velocity.x = 0;
     currentPlayer.player.body.velocity.y = 0;
@@ -202,5 +203,11 @@ function genRandom(length) {
 function hitEnemy(player, enemy) {
     enemy.kill();
     currentPlayer.reduceHP(30);
+    enemyManager.pushEnemy(new Enemy());
+}
+
+function killEnemy(fireBall, enemies) {
+    enemies.kill();
+    fireBall.kill();
     enemyManager.pushEnemy(new Enemy());
 }
