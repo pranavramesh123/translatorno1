@@ -2,6 +2,7 @@ var baseURL = "https://enghack2016.firebaseio.com/rooms";
 var ref = new Firebase(baseURL);
 function hasRoom(roomName,playerName){
 	getRoomStatus(roomName);
+	deleteAllRoom();
 	ref.once("value", function(snapshot) {
 	  if(snapshot.hasChild(roomName) == true){
 	  	console.log(snapshot.hasChild(roomName));
