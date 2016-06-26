@@ -52,12 +52,11 @@ function create() {
     enemyGroup = Context.game.add.group();
     enemyGroup.enableBody = true;
 
-    for (var i = 0; i < 0; i++) {
+    for (var i = 0; i < 12; i++) {
         enemyManager.pushEnemy(new Enemy());
     }
     currentPlayer.addPlayerToWorld();
     playerManager.addPlayersToWorld();
-    playerManager.getItem(2).kill();
 
     audio = Context.game.add.audio('audio');
     audio.allowMultiple = true;
