@@ -67,8 +67,8 @@ var Player = function(name, bot) {
     var tagScoreboard;
     if (!bot) {
         tagScoreboard = Context.game.add.text(Context.width - 250, 0, 'Score: ' + this.scoreboard, styleScore);
-    } 
-    
+    }
+
     Context.game.load.image('heart', 'assets/image/player/heart.png');
     Context.game.load.image(gamerName, 'assets/image/player/gunPlayer.png');
 
@@ -95,7 +95,12 @@ var Player = function(name, bot) {
         }
     };
     this.addPlayerToWorld = function() {
-        this.player = Context.game.add.sprite(Context.game.world.centerX, genRandom(Context.height), gamerName);
+        if(gamerName==='me'){
+          this.player = Context.game.add.sprite(Context.game.world.centerX,genRandom(Context.height), gamerName);
+        }
+        else {
+          this.player = Context.game.add.sprite(-400, -400, gamerName);
+        }
         this.player.anchor.set(0.5);
         Context.game.physics.enable(this.player, Phaser.Physics.ARCADE);
         this.player.body.collideWorldBounds = true;
