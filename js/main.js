@@ -98,7 +98,7 @@ function update() {
 
     Context.game.physics.arcade.overlap(currentPlayer.player, enemyGroup, hitEnemy, null, this);
     Context.game.physics.arcade.overlap(Attack.fireBall, enemyGroup, killEnemyBall, null, this);
-    Context.game.physics.arcade.overlap(currentPlayer.player, Attack.fireBall, hitEnemy, null, this);
+    Context.game.physics.arcade.overlap(currentPlayer.player, Attack.fireBall2, reduceHP, null, this);
 
     //  Reset the players velocity (movement)
     currentPlayer.player.body.velocity.x = 0;

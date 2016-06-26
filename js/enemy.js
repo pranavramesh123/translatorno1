@@ -96,7 +96,7 @@ function hitEnemy(player, enemy) {
     if (!player.hasCollided) {
         player.hasCollided = true;
         enemyManager.getEnemyByPhysicsInstance(enemy).reduceHP(30);
-        currentPlayer.reduceHP(30);
+        currentPlayer.reduceHP();
         Context.game.time.events.add(Phaser.Timer.SECOND * 1, resetCollison, this);
         audio.play('boss hit');
     }
