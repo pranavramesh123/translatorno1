@@ -71,17 +71,15 @@ var special_key_pair;
 function update() {
     if(!login) {
         updatePlayerStatus(roomName, playerName, currentPlayer.player.x, currentPlayer.player.y, currentPlayer.lifes);
-        if(special_key_pair != 'asdf'){
-            var i = -1;
-            for (var key in special_key_pair) {
-                i++;
-                if (key == playerName) continue;
-                var player = playerManager.getItem(i);
-                player.x = special_key_pair[key]['positionX'];
-                player.y = special_key_pair[key]['positionY'];
-                if (special_key_pair[key]['health'] <= 0) {
-                    player.kill();
-                }
+        var i = -1;
+        for (var key in special_key_pair) {
+            i++;
+            if (key == playerName) continue;
+            var player = playerManager.getItem(i);
+            player.x = special_key_pair[key]['positionX'];
+            player.y = special_key_pair[key]['positionY'];
+            if (special_key_pair[key]['health'] <= 0) {
+                player.kill();
             }
         }
     }  
