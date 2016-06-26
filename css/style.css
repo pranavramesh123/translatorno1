@@ -1,3 +1,61 @@
+*{transition:all 1s ease-out;}
+body{background-color:#161023;} 
+h1{text-align:center;}
+#section-main{-webkit-filter:blur(5px);}
+#section-login{
+	animation: grow 1.2s 1;
+	box-shadow: orangered 0px 0px 0px 10px;
+	border:15px solid #161023;
+	background-color:orangered;
+	border-radius:20px;
+	width:26vw;
+	height:60vh;
+	position:fixed;
+	left:37vw;
+	top:20vh;
+}
+#triangle{
+	position:absolute;
+	width: 0; 
+	height: 0; 
+	left:0;
+	right:0;
+	cursor:pointer;
+	margin:auto;
+ 	border-bottom: 100px solid transparent;
+	border-left: 100px solid transparent; 
+	border-right: 100px solid transparent; 
+	border-top:100px solid #161023; 
+	bottom:-20%;
+	animation:flashing 2s infinite linear;
+} 
+#triangle:hover{
+	transition:all .5s linear;
+	animation:none;
+	border-right: 80px solid transparent; 
+	border-left: 80px solid transparent; 
+	border-top:100px solid cyan; 
+}
+input{
+	opacity:0;
+	border-radius:20px;
+	font-size:150%;
+	width:10%;
+	height:10%;
+	margin-left:5%;
+	padding-left:999px;
+	background-color:orangered;
+	border:5px solid #161023;
+	color:aqua;
+	padding-left:5%;
+}
+
+input:hover{
+	border-bottom-color:aqua;
+	border-left-width:10px;
+	border-left-color: #161023;
+}
+ 
 .box{
 	display:inline-table;
 	width:100px;
@@ -12,7 +70,20 @@
 	margin-left:10px;
 	margin-top:10px;
 }
+
 .box:hover{
 	background-color:white;
 	color:black;
 }
+
+@-webkit-keyframes grow {
+  0%   {height:0px;width:0px; opacity:0;box-shadow: aqua 0px 0px 0px 999px; }
+  100% {opacity: 1;height:60vh; width:26vw;box-shadow: orangered 0px 0px 0px 10px; }
+}
+.rotate{animation:rotating 1000s infinite linear;}
+@keyframes rotating{from{transform: rotate(0deg);}to{transform:rotate(9999deg);}} 
+@keyframes flashing{
+	0%{border-top:100px solid #b30000; }
+	50%{border-top:100px solid #161023; }
+	100%{border-top:100px solid #b30000; }
+} 

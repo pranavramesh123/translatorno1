@@ -1,10 +1,38 @@
 var baseURL = "https://enghack2016.firebaseio.com/rooms";
 var ref = new Firebase(baseURL);
-
+function hasRoom(roomName,playerName){  
+	ref.once("value", function(snapshot) {
+	  if(snapshot.hasChild(roomName) == true){
+	  	console.log(snapshot.hasChild(roomName));
+	  	console.log('room exist');
+	  	hasPlayer(roomName,playerName);
+	  }else{ 
+	  	console.log('room free');
+	  	createRoom(roomName,playerName);
+ 		login_status(false);
+	  }
+	}); 
+}
+function hasPlayer(roomName,playerName){
+	console.log('hasPlayer function called');
+	var usersRef = ref.child(roomName);
+	usersRef.once("value", function(snapshot) {
+	  if(snapshot.hasChild(playerName) == true){
+	  	console.log('player exist');
+		alert('player with the same name exist in this room');
+		document.getElementById('room-name').value = '';
+	  	document.getElementById('player-name').value = '';
+	  }else{ 
+	  	console.log('player free');
+	  	addPlayer(roomName,playerName);
+ 		login_status(false);
+	  }
+	});
+}
 function createRoom(roomName,playerName){
 	ref.once("value", function(snapshot) {
 	  if(snapshot.hasChild(roomName) == true){
-	  	console.log('cannot create Room ' + roomName +' : pick a different name');
+	  		return false;
 	  }else{ 
 	  	console.log('creating Room: ' + roomName);
 		var newPlayerDetail = {
@@ -17,6 +45,7 @@ function createRoom(roomName,playerName){
 		var newRoom = {};
 		newRoom[roomName] = newPlayer;
 		ref.update(newRoom);
+		return true;
 	  }
 	});
 }
