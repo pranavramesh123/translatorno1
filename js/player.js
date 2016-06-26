@@ -42,11 +42,10 @@ var PlayerManager = function() {
 /*
  * A class that make a new player to the game
  */
-var Player = function(name, type) {
+var Player = function(name) {
     // initialize player's name and add it to the game object
     var gamerName = name;
     var healthbar = [];
-    var playerType = type;
 
     var style = {
         font: "65px Arial",
@@ -64,17 +63,11 @@ var Player = function(name, type) {
     this.alive = true;
     this.lifes = 4;
     this.player = null;
-    this.weapon = null;
 
     var tagScoreboard = Context.game.add.text(Context.width - 250, 0, 'Score: ' + this.scoreboard, styleScore);
 
     Context.game.load.image('heart', 'assets/image/player/heart.png');
-    if (type == 0) {
-        Context.game.load.image(name, 'assets/image/player/gunPlayer.png');
-    } else {
-        Context.game.load.image(name, 'assets/image/player/knifePlayer.png');
-        Context.game.load.image(name + '1', 'assets/image/player/knife.png');
-    }
+    Context.game.load.image(name, 'assets/image/player/gunPlayer.png');
 
     this.updateScore = function() {
         tagScoreboard.setText('Score: ' + this.scoreboard);
@@ -82,10 +75,6 @@ var Player = function(name, type) {
 
     this.getName = function() {
         return gamerName;
-    };
-
-    this.getType = function() {
-        return playerType;
     };
 
     this.reduceHP = function(damage) {
@@ -101,9 +90,6 @@ var Player = function(name, type) {
             var t = Context.game.add.text(Context.game.world.centerX - 150, 0, text, style);
 
             deletePlayer(roomName, playerName);
-            if (this.weapon != null) {
-                this.weapon.kill();
-            }
         }
     };
     this.addPlayerToWorld = function() {
@@ -111,14 +97,7 @@ var Player = function(name, type) {
         for (var i = 0; i < 4; i++) {
             healthbar.push(Context.game.add.image(i * 40, 0, 'heart'));
         }
-        if (playerType != 0) {
-            this.weapon = Context.game.add.sprite(18, 18, gamerName + '1');
-            this.weapon.anchor.set(1.32);
-            Context.game.physics.enable(this.weapon, Phaser.Physics.ARCADE);
-            this.weapon.body.allowRotation = false;
-            this.weapon.body.collideWorldBounds = true;
-            this.weapon.body.setSize(50, 300, 300, 300);
-        }
+
         this.player.anchor.set(0.5);
         Context.game.physics.enable(this.player, Phaser.Physics.ARCADE);
         this.player.body.collideWorldBounds = true;

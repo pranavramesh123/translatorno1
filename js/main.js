@@ -25,9 +25,9 @@ function preload() {
 
     // initialize players
     playerManager = new PlayerManager();
-    currentPlayer = new Player('me', 0);
+    currentPlayer = new Player('me');
     for (var i = 0; i < 3; i++) {
-        var player = new Player(i, 0);
+        var player = new Player(i);
         playerManager.pushPlayer(player);
     }
 }
@@ -39,15 +39,13 @@ function create() {
     cursors = Context.game.input.keyboard.createCursorKeys();
     Context.game.stage.backgroundColor = '#313131';
 
-    if (currentPlayer.getType() == 0) {
-        // fireball attributes
-        Attack.fireBall = Context.game.add.group();
-        Attack.fireBall.enableBody = true;
-        Attack.fireBall.physicsBodyType = Phaser.Physics.ARCADE;
-        Attack.fireBall.createMultiple(50, 'bullet');
-        Attack.fireBall.setAll('checkWorldBounds', true);
-        Attack.fireBall.setAll('outOfBoundsKill', true);
-    }
+    // fireball attributes
+    Attack.fireBall = Context.game.add.group();
+    Attack.fireBall.enableBody = true;
+    Attack.fireBall.physicsBodyType = Phaser.Physics.ARCADE;
+    Attack.fireBall.createMultiple(50, 'bullet');
+    Attack.fireBall.setAll('checkWorldBounds', true);
+    Attack.fireBall.setAll('outOfBoundsKill', true);
 
     // enemies attributes
     enemyManager = new EnemyManager();
@@ -76,7 +74,7 @@ function update() {
         if(listing != undefined){
             for (var i = 0; i < listing.length; i++) {
                 if (listing[i] == playerName) continue;
-                player = playerManager.getItem(i);
+                var player = playerManager.getItem(i);
                 player.x = listing[i].positionX;
                 player.y = listing[i].positionY;
                 if (listing[i].health <= 0) {
@@ -88,26 +86,15 @@ function update() {
 
     Context.game.physics.arcade.overlap(currentPlayer.player, enemyGroup, hitEnemy, null, this);
     Context.game.physics.arcade.overlap(Attack.fireBall, enemyGroup, killEnemyBall, null, this);
-    if (currentPlayer.getType() == 1) {
-        Context.game.physics.arcade.collide(currentPlayer.weapon, enemyGroup, killEnemyKnife, null, this);
-    }
 
     //  Reset the players velocity (movement)
     currentPlayer.player.body.velocity.x = 0;
     currentPlayer.player.body.velocity.y = 0;
-    if (currentPlayer.getType() != 0) {
-        currentPlayer.weapon.body.velocity.x = 0;
-        currentPlayer.weapon.body.velocity.y = 0;
-    }
 
-    if (currentPlayer.getType() == 0) {
-        currentPlayer.player.rotation = Context.game.physics.arcade.angleToPointer(currentPlayer.player);
-    } else {
-        currentPlayer.weapon.rotation = Context.game.physics.arcade.angleToPointer(currentPlayer.weapon);
-    }
+    currentPlayer.player.rotation = Context.game.physics.arcade.angleToPointer(currentPlayer.player);
 
     // fire ball activation
-    if (currentPlayer.getType() == 0 && Context.game.input.activePointer.isDown) {
+    if (Context.game.input.activePointer.isDown) {
         fire();
     }
 
@@ -117,28 +104,16 @@ function update() {
     if (cursors.left.isDown) {
         //  Move to the left
         currentPlayer.player.body.velocity.x = -150;
-        if (currentPlayer.getType() != 0) {
-            currentPlayer.weapon.body.velocity.x = -150;
-        }
     } else if (cursors.right.isDown) {
         //  Move to the right
         currentPlayer.player.body.velocity.x = 150;
-        if (currentPlayer.getType() != 0) {
-            currentPlayer.weapon.body.velocity.x = 150;
-        }
     }
     if (cursors.up.isDown) {
         // Move up
         currentPlayer.player.body.velocity.y = -150;
-        if (currentPlayer.getType() != 0) {
-            currentPlayer.weapon.body.velocity.y = -150;
-        }
     } else if (cursors.down.isDown) {
         // Move down
         currentPlayer.player.body.velocity.y = 150;
-        if (currentPlayer.getType() != 0) {
-            currentPlayer.weapon.body.velocity.y = 150;
-        }
     }
 }
 
