@@ -88,7 +88,7 @@ function deleteRoom(roomName){
 	});
 }
 
-function deletePlayer(roomName,playerName){debugger;
+function deletePlayer(roomName,playerName){ 
 	var roomRef = ref.child(roomName);
 	roomRef.once("value", function(snapshot) {
 	  if(snapshot.hasChild(playerName) == false){
