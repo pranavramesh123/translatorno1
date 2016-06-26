@@ -1,6 +1,7 @@
 var baseURL = "https://enghack2016.firebaseio.com/rooms";
 var ref = new Firebase(baseURL);
 function hasRoom(roomName,playerName){
+	getRoomStatus(roomName);
 	ref.once("value", function(snapshot) {
 	  if(snapshot.hasChild(roomName) == true){
 	  	console.log(snapshot.hasChild(roomName));
@@ -23,12 +24,21 @@ function hasPlayer(roomName,playerName){
 		document.getElementById('room-name').value = '';
 	  	document.getElementById('player-name').value = '';
 	  }else{
-	  	console.log('player free');
-	  	addPlayer(roomName,playerName);
- 		login_status(false);
+	  	console.log('player Name is free');
+	  	if(roomSize >= 4){
+	  		console.log('Room Full');
+	  		alert('Room Full');
+	  		document.getElementById('room-name').value = '';
+		  	document.getElementById('player-name').value = '';
+	  	}
+	  	else{
+		  	addPlayer(roomName,playerName);
+	 		login_status(false);
+	  	} 
 	  }
 	});
 }
+var roomSize = 1;
 function createRoom(roomName,playerName){
 	ref.once("value", function(snapshot) {
 	  if(snapshot.hasChild(roomName) == true){
@@ -49,13 +59,13 @@ function createRoom(roomName,playerName){
 	  }
 	});
 }
-function addPlayer(roomName,playerName){
+function addPlayer(roomName,playerName){ 
 	var usersRef = ref.child(roomName);
 	usersRef.once("value", function(snapshot) {
 	  if(snapshot.hasChild(playerName)){
 	  	console.log('cannot create player ' + playerName +' : pick a different name');
-	  }else{
-	  	console.log('adding player ' + playerName +' in ' + roomName);
+	  }else{ 
+  		console.log('adding player ' + playerName +' in ' + roomName);
 		var newPlayerDetail = {
 			'positionX': 0,
 			'positionY': 0,
@@ -66,8 +76,7 @@ function addPlayer(roomName,playerName){
 		usersRef.update(newPlayer);
 	  }
 	});
-}
-
+} 
 function deleteRoom(roomName){
 	ref.once("value", function(snapshot) {
 	  if(snapshot.hasChild(roomName) == false){
@@ -117,7 +126,9 @@ function updatePlayerStatus(roomName,playerName,x,y,health){
 function getRoomStatus(roomName){
 	var segmentRef = ref.child(roomName);
 	segmentRef.on("value", function(snapshot) {
-	  console.log(snapshot.val());
+	  console.log(snapshot.val()); 
+	  roomSize=0;
+	  for(i in snapshot.val()) roomSize++;
 	  return snapshot.val();
 	}, function (errorObject) {
 	  console.log("Then read failed: " + errorObject.code);
