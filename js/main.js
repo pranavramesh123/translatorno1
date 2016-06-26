@@ -13,7 +13,8 @@ var Attack = {
     fireBall: null,
     fireBalls: null,
     fireRate: 500,
-    nextFire: 0
+    nextFire: 0,
+    nextFire2: 0
 };
 // fields for players
 var playerManager, currentPlayer, enemyManager, enemyGroup, cursors, audio;
@@ -143,8 +144,8 @@ function fire() {
 
 /* fire function from enemies */
 function fire2(x, y) {
-	if (Context.game.time.now > Attack.nextFire && Attack.fireBall2.countDead() > 0) {
-        Attack.nextFire = Context.game.time.now + Attack.fireRate;
+	if (Context.game.time.now > Attack.nextFire2 && Attack.fireBall2.countDead() > 0) {
+        Attack.nextFire2 = Context.game.time.now + Attack.fireRate;
         var bullet = Attack.fireBall2.getFirstDead();
         bullet.reset(x - 8, y - 8);
         Context.game.physics.arcade.moveToPointer(bullet, 300);
