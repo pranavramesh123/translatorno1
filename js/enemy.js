@@ -28,7 +28,7 @@ function EnemyManager() {
 }
 
 function Enemy() {
-    var health = 50,
+    var health = 30,
         speed = 2,
         directionX,
         directionY;
