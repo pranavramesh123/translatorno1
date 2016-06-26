@@ -1,0 +1,18 @@
+.box{
+	display:inline-table;
+	width:100px;
+	height:50px;
+	border:2px solid white;
+	color:white;
+	text-align:center;
+	padding-top:10px;
+	-webkit-user-select:none;
+	border-radius:20px;
+	cursor:pointer;
+	margin-left:10px;
+	margin-top:10px;
+}
+.box:hover{
+	background-color:white;
+	color:black;
+}

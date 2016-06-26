@@ -3,14 +3,25 @@
 <head>
   <meta charset="utf-8">
   <meta name="author" content="Tan He, Liang-Hsuan Ma, Xiao(Johnson) Han">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>EngHack 2016</title>
+  <link href="css/style.css" rel="stylesheet">
   <link rel="shortcut icon" type="image/png" href="img/favicon.ico"/>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+  <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+  <script type="text/javascript" src="js/phaser.min.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>    
+  <script type="text/javascript" src="js/backend.js"></script>  
 </head>
 <body style="background-color:teal">
   <center><h1>EngHack 2016</h1></center>
-</body>
-<script type="text/javascript" src="js/phaser.min.js"></script>
-<script type="text/javascript" src="js/main.js"></script>    
-<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+  <div class='box' onclick='createRoom("testingRoom","Johnson")'>CREATE Room</div>
+  <div class='box' onclick='createRoom("EngHack","Mark")'>CREATE Room2</div>
+  <div class='box' onclick='updatePlayerStatus("testingRoom","Johnson",999,999,999)'>UPDATE</div>	
+  <div class='box' onclick='addPlayer("testingRoom","bob")'>CREATE PLAYER</div>
+  <div class='box' onclick='getRoomStatus("testingRoom")'>GET ROOM STATUS</div>
+  <div class='box' onclick='getPlayerStatus("testingRoom","Johnson")'>GET Player STATUS</div>
+  <div class='box' onclick='deleteRoom("testingRoom")'>DELETE ROOM</div>
+  <div class='box' onclick='deleteAllRoom()'>DELETE All ROOM</div>
+</body> 
 </html>
