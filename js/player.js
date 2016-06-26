@@ -46,7 +46,7 @@ var PlayerManager = function() {
  */
 var Player = function(name, type) {
     // initialize player's name and add it to the game object
-    var playerName = name;
+    var gamerName = name;
     var health = 200;
     var playerType = type;
     this.alive = true;
@@ -62,7 +62,7 @@ var Player = function(name, type) {
     }
 
     this.getName = function() {
-        return playerName;
+        return gamerName;
     };
 
     this.getType = function() {
@@ -79,16 +79,16 @@ var Player = function(name, type) {
             var style = { font: "65px Arial", fill: "#ff0044", align: "center" };
             var t = Context.game.add.text(Context.game.world.centerX-150, 0, text, style);
             alert(roomName + ' ' + playerName );
-            deletePlayer(roomName,playerName);
+            deletePlayer(roomName, playerName);
             if (this.weapon != null) {
                 this.weapon.kill();
             }
         }
     };
     this.addPlayerToWorld = function() {
-        this.player = Context.game.add.sprite(0, 0, playerName);
-        if (playerType != 0 ) {
-            this.weapon = Context.game.add.sprite(18, 18, playerName + '1');
+        this.player = Context.game.add.sprite(0, 0, gamerName);
+        if (playerType != 0 ) { 
+            this.weapon = Context.game.add.sprite(18, 18, gamerName + '1'); 
             this.weapon.anchor.set(1.32);
             Context.game.physics.enable(this.weapon, Phaser.Physics.ARCADE);
             this.weapon.body.allowRotation = false;

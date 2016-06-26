@@ -38,7 +38,7 @@ function createRoom(roomName,playerName){
 		var newPlayerDetail = {
 			'positionX': 0,
 			'positionY': 0,
-			'health': 100
+			'health': 4
 		};
 		var newPlayer = {};
 		newPlayer[playerName] = newPlayerDetail;
@@ -59,7 +59,7 @@ function addPlayer(roomName,playerName){
 		var newPlayerDetail = {
 			'positionX': 0,
 			'positionY': 0,
-			'health': 100
+			'health': 4
 		};
 		var newPlayer = {};
 		newPlayer[playerName] = newPlayerDetail;

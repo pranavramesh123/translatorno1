@@ -24,7 +24,9 @@ function preload() {
     Context.game.load.audio('audio', 'assets/audio/fx_mixdown.ogg');
 
     // initialize players
-    currentPlayer = new Player('player1', 0);
+    currentPlayer = new Player('me', 0);
+
+    
 }
 
 /* create function that register more things for objects */
