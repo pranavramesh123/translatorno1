@@ -24,7 +24,12 @@ function preload() {
     Context.game.load.audio('audio', 'assets/audio/fx_mixdown.ogg');
 
     // initialize players
+    playerManager = new PlayerManager();
     currentPlayer = new Player('me', 0);
+    for (var i = 0; i < 3; i++) {
+        var player = new Player(i, 0);
+        playerManager.pushPlayer(player);
+    }
 }
 
 /* create function that register more things for objects */
@@ -52,8 +57,6 @@ function create() {
     for (var i = 0; i < 10; i++) {
         enemyManager.pushEnemy(new Enemy());
     }
-    playerManager = new PlayerManager();
-    playerManager.pushPlayer(currentPlayer);
     playerManager.addPlayersToWorld();
 
     audio = Context.game.add.audio('audio');
@@ -68,16 +71,15 @@ function create() {
 function update() {
     if(!login) {
         updatePlayerStatus(roomName, playerName, currentPlayer.player.x, currentPlayer.player.y, currentPlayer.lifes);
-        playerManager.killAllPlayer();
         var listing = getRoomStatus(roomName);
         if(listing != undefined){
-            for (item in listing) {
-                if (item == playerName) continue;
-                var player = new Player(item, 0);
-                player.lifes = item.health; 
-                PlayerManager.pushPlayer(player);
-                if (player.getHealth() <= 0) {
-                    player.player.kill();
+            for (var i = 0; i < listing.length; i++) {
+                if (listing[i] == playerName) continue;
+                player = playerManager.getItem(i);
+                player.x = listing[i].positionX;
+                player.y = listing[i].positionY;
+                if (listing[i].health <= 0) {
+                    player.kill();
                 }
             }
         }

@@ -20,10 +20,8 @@ var PlayerManager = function() {
         list.splice(list.indexOf(player), 1);
     }
 
-    function update() {
-        for (var player in list) {
-            //player.update();
-        }
+    function getItem(index) {
+        return list[index].player;
     }
 
     function addPlayersToWorld() {
@@ -32,19 +30,12 @@ var PlayerManager = function() {
         }
     }
 
-    function killAllPlayer() {
-        for (var i = 1; i < list.length; i++) {
-            list[i].player.kill();
-        }
-    }
-
     return {
         pushPlayer: pushPlayer,
         getPlayerByPhysicsInstance: getPlayerByPhysicsInstance,
         removePlayer: removePlayer,
         addPlayersToWorld: addPlayersToWorld,
-        killAllPlayer,
-        update: update
+        getItem: getItem
     };
 }
 
