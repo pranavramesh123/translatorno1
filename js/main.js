@@ -67,17 +67,23 @@ function create() {
 
 
 /* udpate function that refresh latest progress */
+var special_key_pair;
 function update() {
     if(!login) {
         updatePlayerStatus(roomName, playerName, currentPlayer.player.x, currentPlayer.player.y, currentPlayer.lifes);
-        var listing = getRoomStatus(roomName);
-        if(listing != undefined){
-            for (var i = 0; i < listing.length; i++) {
-                if (listing[i] == playerName) continue;
+        if(special_key_pair != 'asdf'){
+            var i = -1;
+            for (var key in special_key_pair) {
+                i++;
+                if (key == playerName) continue;
                 var player = playerManager.getItem(i);
-                player.x = listing[i].positionX;
-                player.y = listing[i].positionY;
-                if (listing[i].health <= 0) {
+                console.log(i);
+                console.log(special_key_pair[key]['positionX']);
+                console.log(special_key_pair[key]['positionY']);
+                console.log(special_key_pair[key]['health']);
+                player.x = special_key_pair[key]['positionX'];
+                player.y = special_key_pair[key]['positionY'];
+                if (special_key_pair[key]['health'] <= 0) {
                     player.kill();
                 }
             }
