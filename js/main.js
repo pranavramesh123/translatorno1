@@ -11,11 +11,13 @@ var Context = {
 // information of fireball attack
 var Attack = {
     fireBall: null,
+    fireBalls: null,
     fireRate: 500,
     nextFire: 0
 };
 // fields for players
 var playerManager, currentPlayer, enemyManager, enemyGroup, cursors, audio;
+var click = false;
 
 /* preload function that initializes graphics */
 function preload() {
@@ -46,6 +48,12 @@ function create() {
     Attack.fireBall.createMultiple(50, 'bullet');
     Attack.fireBall.setAll('checkWorldBounds', true);
     Attack.fireBall.setAll('outOfBoundsKill', true);
+    Attack.fireBall2 = Context.game.add.group();
+    Attack.fireBall2.enableBody = true;
+    Attack.fireBall2.physicsBodyType = Phaser.Physics.ARCADE;
+    Attack.fireBall2.createMultiple(50, 'bullet');
+    Attack.fireBall2.setAll('checkWorldBounds', true);
+    Attack.fireBall2.setAll('outOfBoundsKill', true);
 
     // enemies attributes
     enemyManager = new EnemyManager();
@@ -70,7 +78,7 @@ function create() {
 var special_key_pair;
 function update() {
     if(!login) {
-        updatePlayerStatus(roomName, playerName, currentPlayer.player.x, currentPlayer.player.y, currentPlayer.lifes);
+        updatePlayerStatus(roomName, playerName, currentPlayer.player.x, currentPlayer.player.y, currentPlayer.lifes, click);
         var i = -1;
         for (var key in special_key_pair) {
             i++;
@@ -78,6 +86,9 @@ function update() {
             var player = playerManager.getItem(i);
             player.x = special_key_pair[key]['positionX'];
             player.y = special_key_pair[key]['positionY'];
+            if (special_key_pair[key]['click']) {
+            	fire2(player.x, player.y);
+            }
             if (special_key_pair[key]['health'] <= 0) {
                 player.kill();
             }
@@ -96,6 +107,9 @@ function update() {
     // fire ball activation
     if (Context.game.input.activePointer.isDown) {
         fire();
+        click = true;
+    } else {
+    	click = false;
     }
 
     enemyManager.update();
@@ -125,4 +139,12 @@ function fire() {
         bullet.reset(currentPlayer.player.x - 8, currentPlayer.player.y - 8);
         Context.game.physics.arcade.moveToPointer(bullet, 300);
     }
+}
+
+/* fire function from enemies */
+function fire2(x, y) {
+       Attack.nextFire = Context.game.time.now + Attack.fireRate;
+       var bullet = Attack.fireBall2.getFirstDead();
+       bullet.reset(x - 8, y - 8);
+       Context.game.physics.arcade.moveToPointer(bullet, 300);
 }
