@@ -105,7 +105,7 @@ function deletePlayer(roomName,playerName){debugger;
 function deleteAllRoom(){
 	console.log('All rooms deleted');
 	ref.set({
-		placeholder:'palceholder'
+		placeholder:'Johnson Han'
 	});
 }
 
