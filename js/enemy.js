@@ -56,6 +56,7 @@ function Enemy() {
 
         this.enemy = enemyGroup.create(posX, genRandom(Context.height), 'enemy');
         this.enemy.scale.setTo(3, 3);
+        this.enemy.body.setSize(20,20,0,0);
         this.enemy.animations.add('idle');
         this.enemy.animations.play('idle', 10, true);
     };
