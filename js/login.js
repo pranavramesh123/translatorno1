@@ -1,4 +1,6 @@
  var login = true;
+ var roomName;
+ var playerName;
  window.onload = load;
  function load(){
  	Context.game.paused = true;
@@ -33,8 +35,8 @@ window.onbeforeunload = function() {
  }
  function action(){  
  	if(login == false) return;
- 	var roomName = document.getElementById('room-name').value;
- 	var playerName = document.getElementById('player-name').value;
+ 	roomName = document.getElementById('room-name').value;
+ 	playerName = document.getElementById('player-name').value;
  	if(roomName == '' || playerName == ''){
  		alert('room or player name cannot be empty');
  		return;

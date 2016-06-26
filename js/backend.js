@@ -80,6 +80,19 @@ function deleteRoom(roomName){
 	});
 }
 
+function deletePlayer(roomName,playerName){
+	var roomRef = ref.child(roomName);
+	roomRef.once("value", function(snapshot) {
+	  if(snapshot.hasChild(playerName) == false){
+	  	console.log(playerName + ' DNE');
+	  }else{
+		var playerRef = roomRef.child(playerName);
+		playerRef.set(null);
+		console.log(playerRef + ' deleted');
+	  }
+	});
+}
+
 function deleteAllRoom(){ 
 	console.log('All rooms deleted');
 	ref.set({
