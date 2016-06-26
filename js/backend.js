@@ -25,7 +25,7 @@ function hasPlayer(roomName,playerName){
 	  	document.getElementById('player-name').value = '';
 	  }else{
 	  	console.log('player Name is free');
-	  	if(roomSize >= 4){
+	  	if(getRoomSize >= 4){
 	  		console.log('Room Full');
 	  		alert('Room Full');
 	  		document.getElementById('room-name').value = '';
@@ -38,7 +38,6 @@ function hasPlayer(roomName,playerName){
 	  }
 	});
 }
-var roomSize = 1;
 function createRoom(roomName,playerName){
 	ref.once("value", function(snapshot) {
 	  if(snapshot.hasChild(roomName) == true){
@@ -127,13 +126,24 @@ function getRoomStatus(roomName){
 	var segmentRef = ref.child(roomName);
 	segmentRef.on("value", function(snapshot) {
 	  //console.log(snapshot.val()); 
-	  roomSize=0;
-	  for(i in snapshot.val()) roomSize++;
 	  return snapshot.val();
 	}, function (errorObject) {
 	  //console.log("Then read failed: " + errorObject.code);
 	  return null;
 	});
+}
+function getRoomSize(roomName){
+	var segmentRef = ref.child(roomName);
+	segmentRef.on("value", function(snapshot) {
+	  //console.log(snapshot.val()); 
+	  var size=0;
+	  for(i in snapshot.val()) size++;
+	  return size;
+	}, function (errorObject) {
+	  //console.log("Then read failed: " + errorObject.code);
+	  return 0;
+	});
+	return 0;
 }
 function getPlayerStatus(roomName,playerName){
 	var segmentRef = ref.child(roomName+'/'+playerName);
