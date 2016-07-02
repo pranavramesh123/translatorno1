@@ -1,3 +1,6 @@
+//Agile Screen Height
+var height = $(window).height();
+var width = $(window).width();
 // main field for game object
 var Context = {
     game: new Phaser.Game(screen.width-50, screen.height-200, Phaser.CANVAS, 'game', {
@@ -18,7 +21,7 @@ var Attack = {
 };
 // fields for players
 var playerManager, currentPlayer, enemyManager, enemyGroup, cursors, audio;
-var click = false;
+var click = true;
 
 /* preload function that initializes graphics */
 function preload() {
@@ -111,7 +114,8 @@ function update() {
         fire();
         click = true;
     } else {
-    	click = false;
+        fire();
+    	click = true;
     }
 
     enemyManager.update();

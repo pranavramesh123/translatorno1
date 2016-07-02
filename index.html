@@ -18,17 +18,18 @@
   <script type="text/javascript" src="js/backend.js"></script>
 </head>
 <body oncontextmenu="return false;">
-	<section id='section-main'>
+
+	<section id='section-main' hidden>
 	  	<center><h1>EngHack 2016</h1></center>
-	  	<div class='box' onclick='createRoom(roomName,name)'>CREATE Room</div>
-	  	<div class='box' onclick='createRoom(roomName,mame)'>CREATE Room2</div>
-	  	<div class='box' onclick='addPlayer("testingRoom","User")'>CREATE PLAYER</div>
+	  	<div class='box' onclick='createRoom("testingRoom","Johnson")'>CREATE Room</div>
+	  	<div class='box' onclick='createRoom("testingRoom","Johnson")'>CREATE Room2</div>
+	  	<div class='box' onclick='addPlayer("testingRoom","Johnson")'>CREATE PLAYER</div>
 	  	<div class='box' onclick='getRoomStatus("testingRoom")'>GET ROOM STATUS</div>
-	  	<div class='box' onclick='getPlayerStatus(roomName,name)'>GET Player STATUS</div>
-	  	<div class='box' onclick='deleteRoom(roomName)'>DELETE ROOM</div>
-	  	<div class='box' onclick='deletePlayer(roomName,name)'>DELETE PLAYER</div>
+	  	<div class='box' onclick='getPlayerStatus("testingRoom","Johnson")'>GET Player STATUS</div>
+	  	<div class='box' onclick='deleteRoom("testingRoom")'>DELETE ROOM</div>
+	  	<div class='box' onclick='deletePlayer("testingRoom","Johnson")'>DELETE PLAYER</div>
 	  	<div class='box' onclick='deleteAllRoom()'>DELETE All ROOM</div>
-	  	<div class='box' onclick='alert(roomName + name)'>User Data</div>
+	  	<div class='box' onclick='alert("testingRoom" + "Johnson")'>User Data</div>
   	</section>
   	<section id='section-login'>
   		<h1 id='room-title'>&lt;Enter a room name&gt;</h1>
