@@ -6,7 +6,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
-	res.sendFile(path.join(__dirname+'/index.html'));
+	res.sendFile(path.join(__dirname+'/../index.html'));
 });
 
 app.get('/room', function (req, res) {
