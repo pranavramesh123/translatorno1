@@ -6,7 +6,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
-	// res.sendFile(path.join(__dirname+'/../index.html'));
+	res.sendFile(path.join(__dirname+'/../index.html'));
 });
 
 app.get('/room', function (req, res) {
@@ -41,6 +41,6 @@ function databaseGarbageCollection(){
 	console.log('databaseGarbageCollection done ' + time);
 }
 
-app.listen(3000, function () {
-  	console.log('Example app listening on port 3000!');
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
 });
