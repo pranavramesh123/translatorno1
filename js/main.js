@@ -1,27 +1,25 @@
-//Agile Screen Height
-var height = $(window).height();
-var width = $(window).width();
 // main field for game object
 var Context = {
-    game: new Phaser.Game(screen.width-50, screen.height-200, Phaser.CANVAS, 'game', {
+    game: new Phaser.Game($(window).width(), $(window).height(), Phaser.CANVAS, 'game', {
         preload: preload,
         create: create,
         update: update
     }),
-    width: screen.width-50,
-    height: screen.height-200
+    width: $(window).width(),
+    height: $(window).height()
 };
+
 // information of fireball attack
 var Attack = {
     fireBall: null,
-    fireBalls: null,
+    fireBall2: null,
     fireRate: 500,
     nextFire: 0,
     nextFire2: 0
 };
+
 // fields for players
 var playerManager, currentPlayer, enemyManager, enemyGroup, cursors, audio;
-var click = true;
 
 /* preload function that initializes graphics */
 function preload() {
@@ -64,12 +62,14 @@ function create() {
     enemyGroup = Context.game.add.group();
     enemyGroup.enableBody = true;
 
+    // enemies creation
     for (var i = 0; i < 17; i++) {
         enemyManager.pushEnemy(new Enemy());
     }
     currentPlayer.addPlayerToWorld();
     playerManager.addPlayersToWorld();
 
+    // audio creation
     audio = Context.game.add.audio('audio');
     audio.allowMultiple = true;
     audio.addMarker('boss hit', 3, 0.5);
@@ -77,12 +77,12 @@ function create() {
     audio.addMarker('death', 12, 4.2);
 }
 
-
 /* udpate function that refresh latest progress */
 var special_key_pair;
 function update() {
+	// retrieve current status
     if(!login) {
-        updatePlayerStatus(roomName, playerName, currentPlayer.player.x, currentPlayer.player.y, currentPlayer.lifes, click);
+        updatePlayerStatus(roomName, playerName, currentPlayer.player.x, currentPlayer.player.y, currentPlayer.lifes);
         var i = -1;
         for (var key in special_key_pair) {
             i++;
@@ -90,15 +90,14 @@ function update() {
             var player = playerManager.getItem(i);
             player.x = special_key_pair[key]['positionX'];
             player.y = special_key_pair[key]['positionY'];
-            if (special_key_pair[key]['click']) {
-            	fire2(player.x, player.y);
-            }
+            fire2(player.x, player.y);
             if (special_key_pair[key]['health'] <= 0) {
                 player.kill();
             }
         }
     }
 
+    // register physical attributes
     Context.game.physics.arcade.overlap(currentPlayer.player, enemyGroup, hitEnemy, null, this);
     Context.game.physics.arcade.overlap(Attack.fireBall, enemyGroup, killEnemyBall, null, this);
     Context.game.physics.arcade.overlap(Attack.fireBall2, enemyGroup, killEnemyBall, null, this);
@@ -107,17 +106,9 @@ function update() {
     currentPlayer.player.body.velocity.x = 0;
     currentPlayer.player.body.velocity.y = 0;
 
+    // other necessary updates
     currentPlayer.player.rotation = Context.game.physics.arcade.angleToPointer(currentPlayer.player);
-
-    // fire ball activation
-    if (Context.game.input.activePointer.isDown) {
-        fire();
-        click = true;
-    } else {
-        fire();
-    	click = true;
-    }
-
+    fire();	
     enemyManager.update();
 
     // player position
