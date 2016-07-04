@@ -4,7 +4,7 @@
   "description": "Description by Johnson",
   "main": "node.js",
   "scripts": {
-    "test": "node app.js"
+    "start": "node js/node.js"
   },
   "author": "Johnson Han",
   "license": "ISC",
