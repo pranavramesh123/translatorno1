@@ -1,19 +1,27 @@
 {
-  "name": "Enghack-2016",
-  "version": "1.0.0",
-  "description": "Description by Johnson",
-  "main": "node.js",
-  "scripts": {
-    "start": "node js/node.js",
-	"test": "echo \"Error: no test specified\" && exit 1"
+  "name": "node-js-getting-started",
+  "version": "0.2.5",
+  "description": "A sample Node.js app using Express 4",
+  "engines": {
+    "node": "5.9.1"
   },
-  "author": "Johnson Han",
-  "license": "ISC",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
+    "ejs": "2.4.1",
     "body-parser": "^1.15.2",
     "express": "^4.14.0"
   },
-  "engines": {
-    "node": "4.1.1"
-  }
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/heroku/node-js-getting-started"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "license": "MIT"
 }

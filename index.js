@@ -1,12 +1,16 @@
-var path    = require("path");
 var express = require('express');
+var path    = require("path");
 var app = express();
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use(express.static(__dirname + ''));
+app.set('views', __dirname + '');
+app.set('view engine', 'html');
 
-app.get('/', function (req, res) {
-	res.sendFile(path.join(__dirname+'/../index.html'));
+//RESTful API
+app.get('/', function(request, response) {
+  response.render('index');
 });
 
 app.get('/room', function (req, res) {
@@ -29,18 +33,11 @@ app.post('/room', function (req, res) {
 	console.log(req.body.id);
 	res.json(req.body.id);
 });
-var time = 0;
-setInterval(function(){time++;}, 1000);
-databaseGarbageCollection();
 
-setInterval(function(){
-  	databaseGarbageCollection();
-}, 1000 * 60 * 5);  
-
-function databaseGarbageCollection(){
-	console.log('databaseGarbageCollection done ' + time);
-}
-
+//Port Setting
+app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'), function() {
   console.log('Node app is running on port', app.get('port'));
 });
+
+
