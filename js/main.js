@@ -1,12 +1,12 @@
 // main field for game object
 var Context = {
-    game: new Phaser.Game($(window).width(), $(window).height(), Phaser.CANVAS, 'game', {
+    game: new Phaser.Game($(window).width() - 50, $(window).height() - 50, Phaser.CANVAS, 'game', {
         preload: preload,
         create: create,
         update: update
     }),
-    width: $(window).width(),
-    height: $(window).height()
+    width: $(window).width() - 50,
+    height: $(window).height() - 50
 };
 
 // information of fireball attack
@@ -75,6 +75,10 @@ function create() {
     audio.addMarker('boss hit', 3, 0.5);
     audio.addMarker('ping', 10, 1.0);
     audio.addMarker('death', 12, 4.2);
+
+    // make full screen
+    game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+    game.input.onDown.add(gofull, this);
 }
 
 /* udpate function that refresh latest progress */
@@ -146,4 +150,12 @@ function fire2(x, y) {
         bullet.reset(x - 8, y - 8);
         Context.game.physics.arcade.moveToPointer(bullet, 300);
    }
+}
+
+/* go full function to make full screen */
+function gofull() {
+    if (game.scale.isFullScreen)
+        game.scale.stopFullScreen();
+    else
+        game.scale.startFullScreen(false);
 }
