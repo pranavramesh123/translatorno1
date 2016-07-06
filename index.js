@@ -1,6 +1,7 @@
 var express = require('express');
 var path    = require("path");
 var app = express();
+var firebaseURL = "https://enghack2016.firebaseio.com/rooms";
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
@@ -13,8 +14,8 @@ app.get('/', function(request, response) {
   response.render('index');
 });
 
-app.get('/room', function (req, res) {
- 	res.status(500).send('room get ' + req.originalUrl + ' place xiaojijun');
+app.get('/getDatabaseURL', function (req, res) {
+ 	res.status(200).send(firebaseURL);
 });
 
 app.get('/room/:roomName', function (req, res) {
