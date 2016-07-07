@@ -47,6 +47,22 @@ var Player = function(name, bot) {
     var gamerName = name;
     var healthbar = [];
 
+    // information of fireball attack
+    var Attack = {
+        fireBall: null,
+        fireRate: 500,
+        nextFire: 0,
+        ready: function(){
+                this.fireBall = Context.game.add.group();
+                this.fireBall.enableBody = true;
+                this.fireBall.physicsBodyType = Phaser.Physics.ARCADE;
+                this.fireBall.createMultiple(50, 'bullet');
+                this.fireBall.setAll('checkWorldBounds', true);
+                this.fireBall.setAll('outOfBoundsKill', true);
+              }
+    };
+
+
     var style = {
         font: "65px Arial",
         fill: "#ff0044",
@@ -72,14 +88,32 @@ var Player = function(name, bot) {
     Context.game.load.image('heart', 'assets/image/player/heart.png');
     Context.game.load.image(gamerName, 'assets/image/player/gunPlayer.png');
 
+    /*Any action during update should be here: check for collisions, fire and etc*/
+    this.update = function(){
+      Context.game.physics.arcade.overlap(this.player, enemyGroup, hitEnemy, null, this);
+      Context.game.physics.arcade.overlap(Attack.fireBall, enemyGroup, killEnemyBall, null, this);
+      this.fire();
+    }
+    /* fire function for shooting */
+    this.fire = function() {
+        if (Context.game.time.now > Attack.nextFire && Attack.fireBall.countDead() > 0 && this.alive) {
+            Attack.nextFire = Context.game.time.now + Attack.fireRate;
+            var bullet = Attack.fireBall.getFirstDead();
+            bullet.reset(this.player.x - 8, this.player.y - 8);
+            Context.game.physics.arcade.moveToPointer(bullet, 300);
+        }
+    };
+
     this.updateScore = function() {
         tagScoreboard.setText('Score: ' + this.scoreboard);
-    }
+    };
 
     this.getName = function() {
         return gamerName;
     };
-
+    this.ready = function() {
+      Attack.ready();
+    };
     this.reduceHP = function() {
         if (healthbar.length > 0) {
             healthbar.pop().kill();
@@ -95,11 +129,10 @@ var Player = function(name, bot) {
         }
     };
     this.addPlayerToWorld = function() {
-        if(gamerName ==='me'){
-          this.player = Context.game.add.sprite(Context.game.world.centerX,genRandom(Context.height), gamerName);
-        }
-        else {
-          this.player = Context.game.add.sprite(Context.width-gamerName*32, Context.height, gamerName);
+        if (gamerName === 'me') {
+            this.player = Context.game.add.sprite(Context.game.world.centerX, genRandom(Context.height), gamerName);
+        } else {
+            this.player = Context.game.add.sprite(Context.width - gamerName * 32, Context.height, gamerName);
         }
         this.player.anchor.set(0.5);
         Context.game.physics.enable(this.player, Phaser.Physics.ARCADE);
