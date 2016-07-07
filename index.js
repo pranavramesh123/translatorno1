@@ -47,11 +47,17 @@ app.post('/renewConnection/:roomName/:playerName', function (req, res) {
 });
 
 app.get('/deletePlayer/:roomName/:playerName', function (req, res) {
+	res.header("Access-Control-Allow-Origin", "*");
+  	res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  	res.header('upadmin', "upadmin");
 	console.log('RESTful DELETE');
 	deletePlayer(req, res);
 });
 
 app.get('/deleteAllRooms', function (req, res) {
+	res.header("Access-Control-Allow-Origin", "*");
+  	res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  	res.header('upadmin', "upadmin");
 	console.log('Database Cleared & Reset');
 	ref.set({
 		placeholder:'Johnson Han'
@@ -60,6 +66,7 @@ app.get('/deleteAllRooms', function (req, res) {
 });
 
 function deletePlayer(req, res){
+	console.log('delete Player Function is called');
 	var roomName = req.params.roomName;
 	var playerName = req.params.playerName;
 	var roomRef = ref.child(roomName);

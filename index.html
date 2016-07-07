@@ -19,7 +19,7 @@
 </head>
 <body oncontextmenu="return false;">
 
-	<section id='section-main' hidden>
+	<section id='section-main'>
 	  	<center><h1>EngHack 2016</h1></center>
 	  	<div class='box' onclick='createRoom("testingRoom","Johnson")'>CREATE Room</div>
 	  	<div class='box' onclick='createRoom("testingRoom","Johnson")'>CREATE Room2</div>
@@ -27,7 +27,7 @@
 	  	<div class='box' onclick='getRoomStatus("testingRoom")'>GET ROOM STATUS</div>
 	  	<div class='box' onclick='getPlayerStatus("testingRoom","Johnson")'>GET Player STATUS</div>
 	  	<div class='box' onclick='deleteRoom("testingRoom")'>DELETE ROOM</div>
-	  	<div class='box' onclick='deletePlayer("testingRoom","Johnson")'>DELETE PLAYER</div>
+	  	<div class='box' onclick='deletePlayer(roomName,playerName)'>DELETE PLAYER</div>
 	  	<div class='box' onclick='deleteAllRooms()'>DELETE All ROOM</div>
 	  	<div class='box' onclick='alert("testingRoom" + "Johnson")'>User Data</div>
   	</section>
