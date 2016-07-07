@@ -47,17 +47,15 @@ app.post('/renewConnection/:roomName/:playerName', function (req, res) {
 });
 
 app.get('/deletePlayer/:roomName/:playerName', function (req, res) {
-	res.header("Access-Control-Allow-Origin", "*");
-  	res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  	res.header('upadmin', "upadmin");
+	res.header("Access-Control-Allow-Origin", "www.survivalgameonline.com");
+  	res.header("Access-Control-Allow-Headers", "upadmin");
 	console.log('RESTful DELETE');
 	deletePlayer(req, res);
 });
 
 app.get('/deleteAllRooms', function (req, res) {
-	res.header("Access-Control-Allow-Origin", "*");
-  	res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  	res.header('upadmin', "upadmin");
+	res.header("Access-Control-Allow-Origin", "www.survivalgameonline.com");
+  	res.header("Access-Control-Allow-Headers", "upadmin");
 	console.log('Database Cleared & Reset');
 	ref.set({
 		placeholder:'Johnson Han'

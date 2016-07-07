@@ -97,7 +97,7 @@ function deleteRoom(roomName){
 function deletePlayer(roomName,playerName){ 
 	$.ajax({
 	  	url: rootURL + '/deletePlayer/' + roomName + '/' + playerName, 
-	  	headers: { 'upadmin': 'upadmin' },
+	  	origin: rootURL,
 	  	type : 'GET',
 	}).complete(function(data) {
     	if(data == true) console.log(roomName + '/' + playerName + ' deleted');
@@ -108,7 +108,7 @@ function deletePlayer(roomName,playerName){
 function deleteAllRooms(){
 	$.ajax({
 	  	url: rootURL + '/deleteAllRooms', 
-	  	headers: { 'upadmin': 'upadmin' },
+	  	origin: rootURL,
 	  	type : 'GET',
 	}).complete(function() {
     	console.log('Database Clear Request Sent');
@@ -156,12 +156,12 @@ function getPlayerStatus(roomName,playerName){
 	});
 }
 
-setInterval(function(){ 
-	$.ajax({
-	  	url: rootURL + '/renewConnection/' + roomName + '/' + playerName,
-	  	headers: { 'upadmin': 'upadmin' },
-	  	type : 'POST',
-	}).complete(function(data) {
-    	console.log('renewed status');
-	});
-}, 5000);
+// setInterval(function(){ 
+// 	$.ajax({
+// 	  	url: rootURL + '/renewConnection/' + roomName + '/' + playerName,
+// 	  	headers: { 'upadmin': 'upadmin' },
+// 	  	type : 'POST',
+// 	}).complete(function(data) {
+//     	console.log('renewed status');
+// 	});
+// }, 5000);
