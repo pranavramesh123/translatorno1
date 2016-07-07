@@ -1,8 +1,8 @@
-var baseURL, rootURL, ref = null;
-$.get( "http://www.survivalgameonline.com/getRootURL", function(data) {
-// $.get( "http://localhost:5000/getRootURL", function(data) {
-	rootURL = data;
-	baseURL = rootURL + '/rooms';
+var baseURL, ref = null;
+// var REST = 'http://www.survivalgameonline.com';
+var REST = 'http://localhost:5000';
+$.get(REST + '/getRootURL', function(data) {
+	baseURL = data;
 	ref = new Firebase(baseURL);
 });
 function hasRoom(roomName,playerName){
@@ -95,22 +95,14 @@ function deleteRoom(roomName){
 }
 
 function deletePlayer(roomName,playerName){ 
-	$.ajax({
-	  	url: rootURL + '/deletePlayer/' + roomName + '/' + playerName, 
-	  	origin: rootURL,
-	  	type : 'GET',
-	}).complete(function(data) {
+	$.get(REST + '/deletePlayer/' + roomName + '/' + playerName, function(data) {
     	if(data == true) console.log(roomName + '/' + playerName + ' deleted');
 	    else console.log(playerName + ' DNE');
 	});
 }
 
 function deleteAllRooms(){
-	$.ajax({
-	  	url: rootURL + '/deleteAllRooms', 
-	  	origin: rootURL,
-	  	type : 'GET',
-	}).complete(function() {
+	$.get(REST + '/deleteAllRooms', function(data) {
     	console.log('Database Clear Request Sent');
 	});
 }
@@ -156,12 +148,8 @@ function getPlayerStatus(roomName,playerName){
 	});
 }
 
-// setInterval(function(){ 
-// 	$.ajax({
-// 	  	url: rootURL + '/renewConnection/' + roomName + '/' + playerName,
-// 	  	headers: { 'upadmin': 'upadmin' },
-// 	  	type : 'POST',
-// 	}).complete(function(data) {
-//     	console.log('renewed status');
-// 	});
-// }, 5000);
+setInterval(function(){  
+	$.post(REST + '/renewConnection/' + roomName + '/' + playerName, function(data) {
+    	console.log('renewed status: ' + roomName + ' ' + playerName);
+	});
+}, 5000);

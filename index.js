@@ -26,7 +26,7 @@ app.get('/', function(request, response) {
 });
 
 app.get('/getRootURL', function (req, res) {
- 	res.status(200).send(rootURL);
+ 	res.status(200).send(roomsURL);
 });
 
 // app.get('/room/:roomName', function (req, res) {
@@ -42,25 +42,21 @@ app.get('/getRootURL', function (req, res) {
 // });
 
 app.post('/renewConnection/:roomName/:playerName', function (req, res) {
-	console.log(req.body.id);
-	res.json(req.body.id);
+	console.log('RENEW: ' + req.params.roomName + ' ' + req.params.playerName);
+	res.status(200).send(true);
 });
 
 app.get('/deletePlayer/:roomName/:playerName', function (req, res) {
-	res.header("Access-Control-Allow-Origin", "www.survivalgameonline.com");
-  	res.header("Access-Control-Allow-Headers", "upadmin");
 	console.log('RESTful DELETE');
 	deletePlayer(req, res);
 });
 
 app.get('/deleteAllRooms', function (req, res) {
-	res.header("Access-Control-Allow-Origin", "www.survivalgameonline.com");
-  	res.header("Access-Control-Allow-Headers", "upadmin");
 	console.log('Database Cleared & Reset');
 	ref.set({
 		placeholder:'Johnson Han'
 	});
-	res.send('Delete All Rooms Request Sent');
+	res.status(200).send('Delete All Rooms Request Sent');
 });
 
 function deletePlayer(req, res){
