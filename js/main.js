@@ -1,12 +1,12 @@
 // main field for game object
 var Context = {
-    game: new Phaser.Game($(window).width() - 50, $(window).height() - 50, Phaser.CANVAS, 'game', {
+    game: new Phaser.Game($(window).width()-30, $(window).height()-30, Phaser.CANVAS, 'game', {
         preload: preload,
         create: create,
         update: update
     }),
-    width: $(window).width() - 50,
-    height: $(window).height() - 50
+    width: $(window).width()-30,
+    height: $(window).height()-30
 };
 
 // information of fireball attack
@@ -77,8 +77,8 @@ function create() {
     audio.addMarker('death', 12, 4.2);
 
     // make full screen
-    game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
-    game.input.onDown.add(gofull, this);
+    // game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+    // game.input.onDown.add(gofull, this);
 }
 
 /* udpate function that refresh latest progress */
