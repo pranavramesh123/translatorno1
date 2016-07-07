@@ -25,8 +25,8 @@ app.get('/', function(request, response) {
   response.render('index');
 });
 
-app.get('/getDatabaseURL', function (req, res) {
- 	res.status(200).send(roomsURL);
+app.get('/getRootURL', function (req, res) {
+ 	res.status(200).send(rootURL);
 });
 
 // app.get('/room/:roomName', function (req, res) {
@@ -41,17 +41,25 @@ app.get('/getDatabaseURL', function (req, res) {
 //   	res.send('EMPTY post ' + req.body + 'place');
 // });
 
-// app.post('/room', function (req, res) {
-// 	console.log(req.body.id);
-// 	res.json(req.body.id);
-// });
+app.post('/renewConnection/:roomName/:playerName', function (req, res) {
+	console.log(req.body.id);
+	res.json(req.body.id);
+});
 
-app.delete('/:roomName/:playerName', function (req, res) {
-	 deletePlayer(req, res);
+app.get('/deletePlayer/:roomName/:playerName', function (req, res) {
+	console.log('RESTful DELETE');
+	deletePlayer(req, res);
+});
+
+app.get('/deleteAllRooms', function (req, res) {
+	console.log('Database Cleared & Reset');
+	ref.set({
+		placeholder:'Johnson Han'
+	});
+	res.send('Delete All Rooms Request Sent');
 });
 
 function deletePlayer(req, res){
-	console.log('RESTful DELETE');
 	var roomName = req.params.roomName;
 	var playerName = req.params.playerName;
 	var roomRef = ref.child(roomName);

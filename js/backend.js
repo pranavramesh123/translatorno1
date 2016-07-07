@@ -1,7 +1,8 @@
-var baseURL, ref = null;
-$.get( "http://www.survivalgameonline.com/getDatabaseURL", function(data) {
-// $.get( "http://localhost:5000/getDatabaseURL", function(data) {
-	baseURL = data; 
+var baseURL, rootURL, ref = null;
+$.get( "http://www.survivalgameonline.com/getRootURL", function(data) {
+// $.get( "http://localhost:5000/getRootURL", function(data) {
+	rootURL = data;
+	baseURL = rootURL + '/rooms';
 	ref = new Firebase(baseURL);
 });
 function hasRoom(roomName,playerName){
@@ -94,22 +95,15 @@ function deleteRoom(roomName){
 }
 
 function deletePlayer(roomName,playerName){ 
-	var roomRef = ref.child(roomName);
-	roomRef.once("value", function(snapshot) {
-	  if(snapshot.hasChild(playerName) == false){
-	  	console.log(playerName + ' DNE');
-	  }else{
-		var playerRef = roomRef.child(playerName);
-		playerRef.set(null);
-		console.log(playerRef + ' deleted');
-	  }
+	$.get(rootURL + '/deletePlayer/' + roomName + '/' + playerName, function(data) {
+    	if(data == true) console.log(roomName + '/' + playerName + ' deleted');
+	    else console.log(playerName + ' DNE');
 	});
 }
 
-function deleteAllRoom(){
-	console.log('All rooms deleted');
-	ref.set({
-		placeholder:'Johnson Han'
+function deleteAllRooms(){
+	$.get(rootURL + '/deleteAllRooms', function(data) {
+    	console.log('Database Clear Request Sent');
 	});
 }
 
