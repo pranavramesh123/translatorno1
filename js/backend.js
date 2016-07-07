@@ -1,5 +1,9 @@
-var baseURL = "https://enghack2016.firebaseio.com/rooms";
-var ref = new Firebase(baseURL);
+var baseURL, ref = null;
+$.get( "http://www.survivalgameonline.com/getDatabaseURL", function(data) {
+// $.get( "http://localhost:5000/getDatabaseURL", function(data) {
+	baseURL = data; 
+	ref = new Firebase(baseURL);
+});
 function hasRoom(roomName,playerName){
 	getRoomStatus(roomName);
 	ref.once("value", function(snapshot) {

@@ -1,15 +1,23 @@
 // main field for game object
 var Context = {
-    game: new Phaser.Game($(window).width() - 50, $(window).height() - 50, Phaser.CANVAS, 'game', {
+    game: new Phaser.Game($(window).width()-30, $(window).height()-30, Phaser.CANVAS, 'game', {
         preload: preload,
         create: create,
         update: update
     }),
-    width: $(window).width() - 50,
-    height: $(window).height() - 50
+    width: $(window).width()-30,
+    height: $(window).height()-30
 };
 
-// TODO: eliminate the use of global varibles
+// information of fireball attack
+var Attack = {
+    fireBall: null,
+    fireBall2: null,
+    fireRate: 500,
+    nextFire: 0,
+    nextFire2: 0
+};
+
 // fields for players
 var playerManager, currentPlayer, enemyManager, enemyGroup, cursors, audio;
 
@@ -35,6 +43,20 @@ function create() {
     cursors = Context.game.input.keyboard.createCursorKeys();
     Context.game.stage.backgroundColor = '#313131';
 
+    // fireball attributes
+    Attack.fireBall = Context.game.add.group();
+    Attack.fireBall.enableBody = true;
+    Attack.fireBall.physicsBodyType = Phaser.Physics.ARCADE;
+    Attack.fireBall.createMultiple(50, 'bullet');
+    Attack.fireBall.setAll('checkWorldBounds', true);
+    Attack.fireBall.setAll('outOfBoundsKill', true);
+    Attack.fireBall2 = Context.game.add.group();
+    Attack.fireBall2.enableBody = true;
+    Attack.fireBall2.physicsBodyType = Phaser.Physics.ARCADE;
+    Attack.fireBall2.createMultiple(50, 'bullet');
+    Attack.fireBall2.setAll('checkWorldBounds', true);
+    Attack.fireBall2.setAll('outOfBoundsKill', true);
+
     // enemies attributes
     enemyManager = new EnemyManager();
     enemyGroup = Context.game.add.group();
@@ -44,8 +66,6 @@ function create() {
     for (var i = 0; i < 17; i++) {
         enemyManager.pushEnemy(new Enemy());
     }
-    currentPlayer.ready();
-
     currentPlayer.addPlayerToWorld();
     playerManager.addPlayersToWorld();
 
@@ -57,8 +77,8 @@ function create() {
     audio.addMarker('death', 12, 4.2);
 
     // make full screen
-    Context.game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
-    Context.game.input.onDown.add(gofull, this);
+    // game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+    // game.input.onDown.add(gofull, this);
 }
 
 /* udpate function that refresh latest progress */
@@ -74,6 +94,7 @@ function update() {
             var player = playerManager.getItem(i);
             player.x = special_key_pair[key]['positionX'];
             player.y = special_key_pair[key]['positionY'];
+            fire2(player.x, player.y);
             if (special_key_pair[key]['health'] <= 0) {
                 player.kill();
             }
@@ -81,7 +102,9 @@ function update() {
     }
 
     // register physical attributes
-    currentPlayer.update();
+    Context.game.physics.arcade.overlap(currentPlayer.player, enemyGroup, hitEnemy, null, this);
+    Context.game.physics.arcade.overlap(Attack.fireBall, enemyGroup, killEnemyBall, null, this);
+    Context.game.physics.arcade.overlap(Attack.fireBall2, enemyGroup, killEnemyBall, null, this);
 
     //  Reset the players velocity (movement)
     currentPlayer.player.body.velocity.x = 0;
@@ -89,6 +112,7 @@ function update() {
 
     // other necessary updates
     currentPlayer.player.rotation = Context.game.physics.arcade.angleToPointer(currentPlayer.player);
+    fire();	
     enemyManager.update();
 
     // player position
@@ -106,6 +130,26 @@ function update() {
         // Move down
         currentPlayer.player.body.velocity.y = 150;
     }
+}
+
+/* fire function for shooting */
+function fire() {
+    if (Context.game.time.now > Attack.nextFire && Attack.fireBall.countDead() > 0 && currentPlayer.alive) {
+        Attack.nextFire = Context.game.time.now + Attack.fireRate;
+        var bullet = Attack.fireBall.getFirstDead();
+        bullet.reset(currentPlayer.player.x - 8, currentPlayer.player.y - 8);
+        Context.game.physics.arcade.moveToPointer(bullet, 300);
+    }
+}
+
+/* fire function from enemies */
+function fire2(x, y) {
+	if (Context.game.time.now > Attack.nextFire2 && Attack.fireBall2.countDead() > 0) {
+        Attack.nextFire2 = Context.game.time.now + Attack.fireRate;
+        var bullet = Attack.fireBall2.getFirstDead();
+        bullet.reset(x - 8, y - 8);
+        Context.game.physics.arcade.moveToPointer(bullet, 300);
+   }
 }
 
 /* go full function to make full screen */
