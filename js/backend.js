@@ -1,6 +1,6 @@
 var baseURL, ref = null;
-// var REST = 'http://www.survivalgameonline.com';
-var REST = 'http://localhost:5000';
+var REST = 'http://www.survivalgameonline.com';
+// var REST = 'http://localhost:5000';
 $.get(REST + '/getRootURL', function(data) {
 	baseURL = data;
 	ref = new Firebase(baseURL);
