@@ -29,26 +29,37 @@ app.get('/getRootURL', function (req, res) {
  	res.status(200).send(roomsURL);
 });
 
-// app.get('/room/:roomName', function (req, res) {
-//   	res.status(500).send('room get ' + req.params.roomName + ' place');
-// });
-
-// app.get('/room/:roomName/:playerName', function (req, res) {
-//   	res.status(500).send('room get ' + req.params.roomName + ' place ' + req.params.playerName);
-// });
-
-// app.post('/', function (req, res) {
-//   	res.send('EMPTY post ' + req.body + 'place');
-// });
+app.post('/createConnection/:roomName/:playerName', function (req, res) {
+	console.log('Created: ' + req.params.roomName + ' ' + req.params.playerName);
+	if(head == null){
+		head = new playerManager(req.params.roomName, req.params.playerName);
+	}else{
+		var temp = head;
+		while(temp.next != null){
+			temp = temp.next;
+		}
+		temp.next = new playerManager(req.params.roomName, req.params.playerName);
+	}
+	console.log(head);
+	res.status(200).send(true);
+});
 
 app.post('/renewConnection/:roomName/:playerName', function (req, res) {
 	console.log('RENEW: ' + req.params.roomName + ' ' + req.params.playerName);
+	var temp = head;
+	while(temp.next != null){
+		temp = temp.next;
+		if(temp.roomName == req.params.roomName && temp.playerName == req.params.playerName){
+			break;
+		}
+	}
+	temp.renew();
 	res.status(200).send(true);
 });
 
 app.get('/deletePlayer/:roomName/:playerName', function (req, res) {
 	console.log('RESTful DELETE');
-	deletePlayer(req, res);
+	deletePlayer(req, res, 'remote');
 });
 
 app.get('/deleteAllRooms', function (req, res) {
@@ -57,12 +68,21 @@ app.get('/deleteAllRooms', function (req, res) {
 		placeholder:'Johnson Han'
 	});
 	res.status(200).send('Delete All Rooms Request Sent');
+}); 
+
+//Port Setting
+app.set('port', (process.env.PORT || 5000));
+app.listen(app.get('port'), function() {
+  console.log('Node app is running on port', app.get('port'));
 });
 
-function deletePlayer(req, res){
+//utility function
+function deletePlayer(req, res, owner){
 	console.log('delete Player Function is called');
-	var roomName = req.params.roomName;
-	var playerName = req.params.playerName;
+	if(owner == 'remote')	var roomName = req.params.roomName;
+	else var roomName = req;
+	if(owner == 'remote')	var playerName = req.params.playerName;
+	else var roomName = res;
 	var roomRef = ref.child(roomName);
 	roomRef.once("value", function(snapshot) {
 	  if(snapshot.hasChild(playerName) == false){
@@ -78,10 +98,26 @@ function deletePlayer(req, res){
 	});
 }
 
-//Port Setting
-app.set('port', (process.env.PORT || 5000));
-app.listen(app.get('port'), function() {
-  console.log('Node app is running on port', app.get('port'));
-});
+function playerManager(roomName, playerName){
+	this.roomName = roomName;
+	this.playerName = playerName;
+	this.token = 10;
+	this.next = null;
+	this.renew = function(){
+		token += 5;
+	}
+}
+
+var head = null;
+
+//Timer
+setInterval(function(){ 
+	if(head != null){
+		if(head.token <= 0){
+			deletePlayer(head.roomName, head.playerName);
+		}
+	}
+}, 5000);
+
 
 

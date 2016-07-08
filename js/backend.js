@@ -25,8 +25,7 @@ function hasPlayer(roomName,playerName){
 	usersRef.once("value", function(snapshot) {
 	  if(snapshot.hasChild(playerName) == true){
 	  	console.log('player exist');
-		alert('player with the same name exist in this room');
-		document.getElementById('room-name').value = '';
+		alert('player with the same name exist in this room'); 
 	  	document.getElementById('player-name').value = '';
 	  }else{
 	  	console.log('player Name is free');
