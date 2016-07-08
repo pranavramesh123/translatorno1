@@ -1,6 +1,6 @@
 var baseURL, ref = null;
-var REST = 'http://www.survivalgameonline.com';
-// var REST = 'http://localhost:5000';
+// var REST = 'http://www.survivalgameonline.com';
+var REST = 'http://localhost:5000';
 $.get(REST + '/getRootURL', function(data) {
 	baseURL = data;
 	ref = new Firebase(baseURL);
@@ -148,7 +148,9 @@ function getPlayerStatus(roomName,playerName){
 }
 
 setInterval(function(){  
-	$.post(REST + '/renewConnection/' + roomName + '/' + playerName, function(data) {
-    	console.log('renewed status: ' + roomName + ' ' + playerName);
-	});
+	if(login == false){
+		$.post(REST + '/renewConnection/' + roomName + '/' + playerName, function(data) {
+	    	console.log('renewed status: ' + roomName + ' ' + playerName);
+		});
+	}
 }, 5000);

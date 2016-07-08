@@ -55,6 +55,9 @@ window.onbeforeunload = function() {
 	 }else{
  		console.log('login status::::: FALSE');
  		login = false;
+    $.post(REST + '/createConnection/' + roomName + '/' + playerName, function(data) {
+        console.log('Connection Created: ' + roomName + ' ' + playerName);
+    });
  		Context.game.paused = false;
 	 	$('#section-main').css('-webkit-filter', 'blur(0px)');
 	 	$('#section-main').css('pointer-events', 'auto');

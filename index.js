@@ -45,7 +45,6 @@ app.post('/createConnection/:roomName/:playerName', function (req, res) {
 });
 
 app.post('/renewConnection/:roomName/:playerName', function (req, res) {
-	console.log('RENEW: ' + req.params.roomName + ' ' + req.params.playerName);
 	var temp = head;
 	while(temp.next != null){
 		temp = temp.next;
@@ -53,7 +52,8 @@ app.post('/renewConnection/:roomName/:playerName', function (req, res) {
 			break;
 		}
 	}
-	temp.renew();
+	temp.renewToken();
+	console.log('RENEW: ' + req.params.roomName + ' ' + req.params.playerName + ' ' + temp.getToken());
 	res.status(200).send(true);
 });
 
@@ -78,22 +78,22 @@ app.listen(app.get('port'), function() {
 
 //utility function
 function deletePlayer(req, res, owner){
-	console.log('delete Player Function is called');
 	if(owner == 'remote')	var roomName = req.params.roomName;
 	else var roomName = req;
 	if(owner == 'remote')	var playerName = req.params.playerName;
-	else var roomName = res;
+	else var playerName = res;
+	console.log('delete Player Function is called ' + roomName + ' ' + playerName);
 	var roomRef = ref.child(roomName);
 	roomRef.once("value", function(snapshot) {
 	  if(snapshot.hasChild(playerName) == false){
 	  	console.log(playerName + ' DNE ');
-		res.status(404).send(false);
+		if(owner == 'remote') res.status(404).send(false);
 	  }else{
 	  	//Deleting
 		var playerRef = roomRef.child(playerName);
 		playerRef.set(null);
 	  	console.log(playerName + ' EXIST ');
-		res.status(200).send(true);
+		if(owner == 'remote') res.status(200).send(true);
 	  }
 	});
 }
@@ -101,10 +101,16 @@ function deletePlayer(req, res, owner){
 function playerManager(roomName, playerName){
 	this.roomName = roomName;
 	this.playerName = playerName;
-	this.token = 10;
+	this.token_duration = 10;
 	this.next = null;
-	this.renew = function(){
-		token += 5;
+	this.renewToken = function(){
+		this.token_duration += 5;
+	}
+	this.getToken = function(){
+		return this.token_duration;
+	}
+	this.deductToken = function(){
+		this.token_duration -= 5;
 	}
 }
 
@@ -113,8 +119,20 @@ var head = null;
 //Timer
 setInterval(function(){ 
 	if(head != null){
-		if(head.token <= 0){
-			deletePlayer(head.roomName, head.playerName);
+		console.log('auto detection: ' + head.getToken());
+		var temp = head;
+		temp.deductToken();
+		if(temp.getToken() <= 0){
+			console.log('AUTO DELETION: ' + temp.roomName + ' ' + temp.playerName);
+			deletePlayer(temp.roomName, temp.playerName, 'local');
+		}
+		while(temp.next != null){
+			temp.deductToken();
+			if(temp.getToken() <= 0){
+				deletePlayer(temp.roomName, temp.playerName, 'local');
+				console.log('AUTO DELETION: ' + temp.roomName + ' ' + temp.playerName);
+			}
+			temp = temp.next;
 		}
 	}
 }, 5000);
