@@ -40,7 +40,6 @@ app.post('/createConnection/:roomName/:playerName', function (req, res) {
 		}
 		temp.next = new playerManager(req.params.roomName, req.params.playerName);
 	}
-	console.log(head);
 	res.status(200).send(true);
 });
 
@@ -64,6 +63,7 @@ app.get('/deletePlayer/:roomName/:playerName', function (req, res) {
 
 app.get('/deleteAllRooms', function (req, res) {
 	console.log('Database Cleared & Reset');
+	head = null;
 	ref.set({
 		placeholder:'Johnson Han'
 	});
@@ -116,24 +116,41 @@ function playerManager(roomName, playerName){
 
 var head = null;
 
+function equality(first, second){
+	if(first.roomName == second.roomName && first.playerName == second.playerName) return true;
+	else return false;
+}
+
+function deleteLinkedList(target){
+	if(equality(head,target) || head == null){head = null; return;}
+	console.log('target !+ had');
+	var temp = head;
+	while(1){
+		if(equality(temp.next,target)){
+			if(temp.next.next == null) temp.next = null;
+			else temp.next = temp.next.next;
+			return;
+		}
+		temp = temp.next;
+	}
+}
+
 //Timer
 setInterval(function(){ 
-	if(head != null){
-		console.log('auto detection: ' + head.getToken());
+	if(head != null){  
+		console.log('GAMGER ACTIVE');
 		var temp = head;
-		temp.deductToken();
-		if(temp.getToken() <= 0){
-			console.log('AUTO DELETION: ' + temp.roomName + ' ' + temp.playerName);
-			deletePlayer(temp.roomName, temp.playerName, 'local');
-		}
-		while(temp.next != null){
-			temp.deductToken();
+		while(1) {
+		    temp.deductToken();
 			if(temp.getToken() <= 0){
-				deletePlayer(temp.roomName, temp.playerName, 'local');
 				console.log('AUTO DELETION: ' + temp.roomName + ' ' + temp.playerName);
+				deletePlayer(temp.roomName, temp.playerName, 'local');
+				deleteLinkedList(temp);
+				console.log('Player Manager:' + head);
 			}
-			temp = temp.next;
-		}
+			if(temp.next == null) break;
+			else temp = temp.next;
+		} 
 	}
 }, 5000);
 
