@@ -61,7 +61,6 @@ window.onbeforeunload = function() {
  		Context.game.paused = false;
 	 	$('#section-main').css('-webkit-filter', 'blur(0px)');
 	 	$('#section-main').css('pointer-events', 'auto');
-	 	$('body').css('background-color', 'teal');
 	 	$('#section-login').css('height', '0px');
 	 	$('#section-login').css('width', '0px');
 	 	$('#section-login').css('visibility', 'hidden');
