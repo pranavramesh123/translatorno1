@@ -61,6 +61,11 @@ app.get('/deletePlayer/:roomName/:playerName', function (req, res) {
 	deletePlayer(req, res, 'remote');
 });
 
+app.get('/ping', function (req, res) {
+	console.log("System PING!!!!: " + "SurvivalGameOnline");
+	res.status(200).send("SurvivalGameOnline");
+});
+
 app.get('/deleteAllRooms', function (req, res) {
 	console.log('Database Cleared & Reset');
 	head = null;
