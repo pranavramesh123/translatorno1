@@ -53,7 +53,7 @@ app.get('/ping', function (req, res) {
 
 app.get('/deleteAllRooms', function (req, res) {
 	console.log('Database Cleared & Reset');
-	head = null;
+	playerManager.data = [];
 	ref.set({
 		placeholder:'Johnson Han'
 	});
@@ -89,7 +89,6 @@ function deletePlayer(req, res, owner){
 }
 // Play Manager
 var playerManager = new LinkedList();
-
 //Timer
 setInterval(function(){ 
 	console.log("Janitor in action with: " + playerManager.length() + ' players');
@@ -100,7 +99,7 @@ setInterval(function(){
 		deletePlayer(playerManager.data[x].roomname, playerManager.data[x].username, 'local');
 	}
 	playerManager.print();
-}, 5000);
+}, playerManager.pingIncrement * 1000);
 
 // LinkedList.js
 function LinkedList(){
