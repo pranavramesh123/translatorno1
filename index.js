@@ -89,14 +89,17 @@ function deletePlayer(req, res, owner){
 }
 // Play Manager
 var playerManager = new LinkedList();
+playerManager.add('aaa','bbb');
 //Timer
 setInterval(function(){ 
 	console.log("Janitor in action with: " + playerManager.length() + ' players');
 	if(playerManager.length() == 0) return;
 	for(var x = 0;x < playerManager.length();x++){
-		var feedback = playerManager.minusPing(playerManager.data[x].roomname,playerManager.data[x].username);
+		var roomname = playerManager.data[x].roomname;
+		var username = playerManager.data[x].username;
+		var feedback = playerManager.minusPing(roomname, username);
 		console.log(feedback);
-		deletePlayer(playerManager.data[x].roomname, playerManager.data[x].username, 'local');
+		deletePlayer(roomname, username, 'local');
 	}
 	playerManager.print();
 }, playerManager.pingIncrement * 1000);
