@@ -37,7 +37,7 @@ app.post('/createConnection/:roomName/:playerName', function (req, res) {
 
 app.post('/renewConnection/:roomName/:playerName', function (req, res) {
 	playerManager.addPing(req.params.roomName, req.params.playerName);
-	console.log('RENEW: ' + req.params.roomName + ' ' + req.params.playerName + ' ' + temp.getToken());
+	console.log('RENEW: ' + req.params.roomName + ' ' + req.params.playerName);
 	res.status(200).send(true);
 });
 
