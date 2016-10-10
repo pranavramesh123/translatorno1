@@ -31,27 +31,12 @@ app.get('/getRootURL', function (req, res) {
 
 app.post('/createConnection/:roomName/:playerName', function (req, res) {
 	console.log('Created: ' + req.params.roomName + ' ' + req.params.playerName);
-	if(head == null){
-		head = new playerManager(req.params.roomName, req.params.playerName);
-	}else{
-		var temp = head;
-		while(temp.next != null){
-			temp = temp.next;
-		}
-		temp.next = new playerManager(req.params.roomName, req.params.playerName);
-	}
+	playerManager.add(req.params.roomName, req.params.playerName);
 	res.status(200).send(true);
 });
 
 app.post('/renewConnection/:roomName/:playerName', function (req, res) {
-	var temp = head;
-	while(temp.next != null){
-		temp = temp.next;
-		if(temp.roomName == req.params.roomName && temp.playerName == req.params.playerName){
-			break;
-		}
-	}
-	temp.renewToken();
+	playerManager.addPing(req.params.roomName, req.params.playerName);
 	console.log('RENEW: ' + req.params.roomName + ' ' + req.params.playerName + ' ' + temp.getToken());
 	res.status(200).send(true);
 });
@@ -102,62 +87,84 @@ function deletePlayer(req, res, owner){
 	  }
 	});
 }
-
-function playerManager(roomName, playerName){
-	this.roomName = roomName;
-	this.playerName = playerName;
-	this.token_duration = 10;
-	this.next = null;
-	this.renewToken = function(){
-		this.token_duration += 5;
-	}
-	this.getToken = function(){
-		return this.token_duration;
-	}
-	this.deductToken = function(){
-		this.token_duration -= 5;
-	}
-}
-
-var head = null;
-
-function equality(first, second){
-	if(first.roomName == second.roomName && first.playerName == second.playerName) return true;
-	else return false;
-}
-
-function deleteLinkedList(target){
-	if(equality(head,target) || head == null){head = null; return;}
-	console.log('target !+ had');
-	var temp = head;
-	while(1){
-		if(equality(temp.next,target)){
-			if(temp.next.next == null) temp.next = null;
-			else temp.next = temp.next.next;
-			return;
-		}
-		temp = temp.next;
-	}
-}
+// Play Manager
+var playerManager = new LinkedList();
 
 //Timer
 setInterval(function(){ 
-	if(head != null){  
-		console.log('GAMGER ACTIVE');
-		var temp = head;
-		while(1) {
-		    temp.deductToken();
-			if(temp.getToken() <= 0){
-				console.log('AUTO DELETION: ' + temp.roomName + ' ' + temp.playerName);
-				deletePlayer(temp.roomName, temp.playerName, 'local');
-				deleteLinkedList(temp);
-				console.log('Player Manager:' + head);
-			}
-			if(temp.next == null) break;
-			else temp = temp.next;
-		} 
+	console.log("Janitor in action with: " + playerManager.length() + ' players');
+	if(playerManager.length() == 0) return;
+	for(var x = 0;x < playerManager.length();x++){
+		var feedback = playerManager.minusPing(playerManager.data[x].roomname,playerManager.data[x].username);
+		console.log(feedback);
+		deletePlayer(playerManager.data[x].roomname, playerManager.data[x].username, 'local');
 	}
+	playerManager.print();
 }, 5000);
 
+// LinkedList.js
+function LinkedList(){
+    this.data = [];
+    this.length = getLength;
+    this.add = add;
+    this.print = print;
+    this.remove = remove;
+    this.addPing = addPing;
+    this.minusPing = minusPing;
+    this.pingIncrement = 5;
+    this.setPingIncrement = setPingIncrement;
+}
+function getLength(){
+	return this.data.length;
+}
+function setPingIncrement(newPing){
+    this.pingIncrement = newPing;
+}
+function addPing(roomname, username){
+    for(var x = 0;x < this.data.length;x++){
+        if(this.data[x].username == username && this.data[x].roomname == roomname){
+            this.data[x].ping += this.pingIncrement;
+            return username + " ping added";
+        }
+    }
+    return false;
+}
+function minusPing(roomname, username){
+    for(var x = 0;x < this.data.length;x++){
+        if(this.data[x].username == username && this.data[x].roomname == roomname){
+            this.data[x].ping -= this.pingIncrement;
+            if(this.data[x].ping <= 0){
+            	this.remove(roomname,username);
+            	return username + " removed"
+            }
+            return username + " ping minus-ed";
+        }
+    }
+    return false;
+}
+function add(roomname, username){
+    var user = {};
+    user["username"] = username;
+    user['roomname'] = roomname;
+    user["ping"] = 15;
+    this.data.push(user);
+    return username + " added";
+}
+function remove(roomname,username){
+    for(var x = 0;x < this.data.length;x++){
+        if(this.data[x].username == username && this.data[x].roomname == roomname){
+            this.data.splice(x,1);
+            return username + " in room: " + roomname + " removed";
+        }
+    }
+    return false;
+}
+function print(){
+    console.log("|||||||||||||||||||||||||||||||||");
+    for(var x = 0;x < this.data.length;x++){
+        console.log(this.data[x].roomname + '  ' + this.data[x].username + '  ' + this.data[x].ping);
+    }
+    console.log("--------------------------------");
+} 
 
 
