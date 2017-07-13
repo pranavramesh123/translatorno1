@@ -4,13 +4,10 @@ var REST = 'https://www.survivalgameonline.com';
 $.get(REST + '/getRootURL', data => {
 	baseURL = data;
 	ref = new Firebase(baseURL);
-}, err => {
-	console.log('fails get root URL');
-	console.log(err);
 });
 function hasRoom(roomName,playerName){
 	getRoomStatus(roomName);
-	ref.once("value", function(snapshot) {
+	ref.once("value", snapshot => {
 	  if(snapshot.hasChild(roomName) == true){
 	  	console.log(snapshot.hasChild(roomName));
 	  	console.log('room exist');
@@ -25,7 +22,7 @@ function hasRoom(roomName,playerName){
 function hasPlayer(roomName,playerName){
 	console.log('hasPlayer function called');
 	var usersRef = ref.child(roomName);
-	usersRef.once("value", function(snapshot) {
+	usersRef.once("value", snapshot => {
 	  if(snapshot.hasChild(playerName) == true){
 	  	console.log('player exist');
 		alert('player with the same name exist in this room');

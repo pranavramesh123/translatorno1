@@ -5,6 +5,8 @@ var app = express();
 //FireBase Setup
 var rootURL = "https://enghack2016.firebaseio.com";
 var roomsURL = "https://enghack2016.firebaseio.com/rooms";
+var allowedURL = "*";
+// var allowedURL = "http://www.survivalgameonline.com";
 var firebase = require("firebase");
 firebase.initializeApp({
   databaseURL: rootURL
@@ -22,31 +24,37 @@ app.set('view engine', 'html');
 
 //RESTful API
 app.get('/', function(request, response) {
-  response.render('index');
+    res.setHeader('Access-Control-Allow-Origin', allowedURL);
+    response.render('index');
 });
 
 app.get('/getRootURL', function (req, res) {
- 	res.status(200).jsonp(roomsURL);
+    res.setHeader('Access-Control-Allow-Origin', allowedURL);
+    res.status(200).jsonp(roomsURL);
 });
 
 app.post('/createConnection/:roomName/:playerName', function (req, res) {
+    res.setHeader('Access-Control-Allow-Origin', allowedURL);
 	console.log('Created: ' + req.params.roomName + ' ' + req.params.playerName);
 	playerManager.add(req.params.roomName, req.params.playerName);
 	res.status(200).send(true);
 });
 
 app.post('/renewConnection/:roomName/:playerName', function (req, res) {
+    res.setHeader('Access-Control-Allow-Origin', allowedURL);
 	playerManager.addPing(req.params.roomName, req.params.playerName);
 	console.log('RENEW: ' + req.params.roomName + ' ' + req.params.playerName);
 	res.status(200).send(true);
 });
 
 app.get('/deletePlayer/:roomName/:playerName', function (req, res) {
+    res.setHeader('Access-Control-Allow-Origin', allowedURL);
 	console.log('RESTful DELETE');
 	deletePlayer(req, res, 'remote');
 });
 
 app.get('/deleteAllRooms', function (req, res) {
+    res.setHeader('Access-Control-Allow-Origin', allowedURL);
 	console.log('Database Cleared & Reset');
 	playerManager.data = [];
 	ref.set({
