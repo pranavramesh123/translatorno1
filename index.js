@@ -1,12 +1,12 @@
 //Basic Setup
 var express = require('express');
-var path    = require("path");
+var path = require("path");
 var app = express();
 //FireBase Setup
 var rootURL = "https://enghack2016.firebaseio.com";
 var roomsURL = "https://enghack2016.firebaseio.com/rooms";
 var firebase = require("firebase");
-firebase.initializeApp({ 
+firebase.initializeApp({
   databaseURL: rootURL
 });
 var db = firebase.database();
@@ -45,7 +45,7 @@ app.get('/deletePlayer/:roomName/:playerName', function (req, res) {
 	console.log('RESTful DELETE');
 	deletePlayer(req, res, 'remote');
 });
- 
+
 app.get('/deleteAllRooms', function (req, res) {
 	console.log('Database Cleared & Reset');
 	playerManager.data = [];
@@ -53,7 +53,7 @@ app.get('/deleteAllRooms', function (req, res) {
 		placeholder:'Johnson Han'
 	});
 	res.status(200).send('Delete All Rooms Request Sent');
-}); 
+});
 
 //Port Setting
 app.set('port', (process.env.PORT || 5000));
@@ -85,7 +85,7 @@ function deletePlayer(req, res, owner){
 // Play Manager
 var playerManager = new LinkedList();
 //Timer
-setInterval(function(){ 
+setInterval(() => {
 	console.log("Janitor in action with: " + playerManager.length() + ' players');
 	if(playerManager.length() == 0) return;
 	for(var x = 0;x < playerManager.length();x++){
@@ -161,6 +161,4 @@ function print(){
         console.log(this.data[x].roomname + '  ' + this.data[x].username + '  ' + this.data[x].ping);
     }
     console.log("--------------------------------");
-} 
-
-
+}
