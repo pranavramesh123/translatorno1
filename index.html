@@ -7,9 +7,9 @@
   <title>EngHack 2016</title>
   <link href="css/style.css" rel="stylesheet">
   <link rel="shortcut icon" type="image/png" href="img/favicon.ico"/>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-  <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
   <script type="text/javascript" src="js/phaser.min.js"></script>
   <script type="text/javascript" src="js/player.js"></script>
   <script type="text/javascript" src="js/enemy.js"></script>
@@ -18,14 +18,14 @@
   <script type="text/javascript" src="js/backend.js"></script>
 </head>
 <body oncontextmenu="return false">
-	<section id='section-login'>
-  		<h1 id='room-title'>&lt;Enter a room name&gt;</h1>
+	<section id='section-login' class="section-login">
+  		<h1 id='room-title'>Enter a room name:</h1>
 	  	<input id="room-name" type="text" name="name" value="" placeholder="Room Name"/>
-	  	<h1 id='player-title'>&lt;Enter a player name&gt;</h1>
+	  	<h1 id='player-title'>Enter a player name:</h1>
 	  	<input id="player-name" type="text" name="name" value="" placeholder="Player Name"/>
   		<h1 id='response'></h1>
 	  	<div title='Go' onclick ='action()' id='triangle'></div>
 	</section>
-  <!-- <embed name="bmg" src="assets/audio/bmg.mp3" loop="true" hidden="true" autostart="true"> -->
+  <embed name="bmg" src="assets/audio/bmg.mp3" loop="true" hidden="true" autostart="true">
 </body>
 </html>

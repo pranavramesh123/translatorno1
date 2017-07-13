@@ -15,7 +15,7 @@
       }
   	}
  	login_status(true);
- 	setTimeout(function(){
+ 	setTimeout(() => {
         $('input').css('opacity','1');
         $('input').css('width','80%');
         $('input').css('outline','none');
@@ -41,8 +41,8 @@ function action(){
   	hasRoom(roomName,playerName);
   }
 }
-function login_status(determine){
-    if(determine == true){
+function login_status(decision){
+    if(decision){
         console.log('login status::::: TRUE');
         $('#section-login').css('visibility', 'visible');
         $('#section-main').css('pointer-events', 'none');

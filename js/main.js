@@ -1,6 +1,6 @@
 // main field for game object
 var Context = {
-    game: new Phaser.Game($(window).width()-30, $(window).height()-30, Phaser.CANVAS, 'game', {
+    game: new Phaser.Game($(window).width()-30, $(window).height()-30, Phaser.AUTO, 'game', {
         preload: preload,
         create: create,
         update: update
