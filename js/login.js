@@ -16,57 +16,51 @@
   	}
  	login_status(true);
  	setTimeout(function(){
- 		$('input').css('opacity','1');
-    $('input').css('width','80%');
- 		$('input').css('outline','none');
+        $('input').css('opacity','1');
+        $('input').css('width','80%');
+        $('input').css('outline','none');
  	}, 500);
- 	// login_status(false);
  }
 window.onbeforeunload = function() {
     return false;
 }
- function sweet(message){
- 	alert('sweet');
- 	var xx;
-    if (confirm(message) == true) {
-        xx = true;
-    } else {
-        xx = false;
-    }
- }
- function action(){
+function sweet(message){
+    alert('sweet');
+    var x = (confirm(message) == true) ? true : false;
+}
+function action(){
   if(login == false) return;
-  roomName = document.getElementById('room-name').value;
-  playerName = document.getElementById('player-name').value;
+  roomName = $('#room-name').val()
+  playerName = $('#player-name').val()
   if (roomName == 'upadmin' && playerName == 'upadmin')
     deleteAllRoom();
   if (roomName == '' || playerName == ''){
-  	alert('room or player name cannot be empty');
-  	return;
+    alert('room or player name cannot be empty');
+    return;
   } else {
   	hasRoom(roomName,playerName);
   }
- }
- function login_status(determine){
- 	if(determine == true){
-    console.log('login status::::: TRUE');
-    $('#section-login').css('visibility', 'visible');
-    $('#section-main').css('pointer-events', 'none');
-    $('#section-main').css('-webkit-filter', 'blur(5px)');
-    $('#section-login').css('-webkit-filter', 'blur(0px)');
-	 }else{
- 		console.log('login status::::: FALSE');
- 		login = false;
-    $.post(REST + '/createConnection/' + roomName + '/' + playerName, function(data) {
-        console.log('Connection Created: ' + roomName + ' ' + playerName);
-    });
- 		Context.game.paused = false;
-	 	$('#section-main').css('-webkit-filter', 'blur(0px)');
-	 	$('#section-main').css('pointer-events', 'auto');
-	 	$('#section-login').css('height', '0px');
-	 	$('#section-login').css('width', '0px');
-	 	$('#section-login').css('visibility', 'hidden');
-	 	$('#section-login').css('opacity', '0');
-	 	$('#section-login').css('-webkit-filter', 'blur(0px)');
+}
+function login_status(determine){
+    if(determine == true){
+        console.log('login status::::: TRUE');
+        $('#section-login').css('visibility', 'visible');
+        $('#section-main').css('pointer-events', 'none');
+        $('#section-main').css('-webkit-filter', 'blur(5px)');
+        $('#section-login').css('-webkit-filter', 'blur(0px)');
+     }else{
+        console.log('login status::::: FALSE');
+        login = false;
+        $.post(REST + '/createConnection/' + roomName + '/' + playerName, function(data) {
+            console.log('Connection Created: ' + roomName + ' ' + playerName);
+        });
+        Context.game.paused = false;
+        $('#section-main').css('-webkit-filter', 'blur(0px)');
+        $('#section-main').css('pointer-events', 'auto');
+        $('#section-login').css('height', '0px');
+        $('#section-login').css('width', '0px');
+        $('#section-login').css('visibility', 'hidden');
+        $('#section-login').css('opacity', '0');
+        $('#section-login').css('-webkit-filter', 'blur(0px)');
 	 }
  }
