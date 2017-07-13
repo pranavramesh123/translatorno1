@@ -25,7 +25,7 @@ function hasPlayer(roomName,playerName){
 	usersRef.once("value", function(snapshot) {
 	  if(snapshot.hasChild(playerName) == true){
 	  	console.log('player exist');
-		alert('player with the same name exist in this room'); 
+		alert('player with the same name exist in this room');
 	  	document.getElementById('player-name').value = '';
 	  }else{
 	  	console.log('player Name is free');
@@ -33,13 +33,13 @@ function hasPlayer(roomName,playerName){
 	  		alert('Room Full');
 	  		console.log('Room Full ');
 	  		console.log('Room Full ' + getRoomSize());
-	  		document.getElementById('room-name').value = '';
+				document.getElementById('room-name').value = '';
 		  	document.getElementById('player-name').value = '';
 	  	}
 	  	else{
 		  	addPlayer(roomName,playerName);
 	 		login_status(false);
-	  	} 
+	  	}
 	  }
 	});
 }
@@ -63,12 +63,12 @@ function createRoom(roomName,playerName){
 	  }
 	});
 }
-function addPlayer(roomName,playerName){ 
+function addPlayer(roomName,playerName){
 	var usersRef = ref.child(roomName);
 	usersRef.once("value", function(snapshot) {
 	  if(snapshot.hasChild(playerName)){
 	  	console.log('cannot create player ' + playerName +' : pick a different name');
-	  }else{ 
+	  }else{
   		console.log('adding player ' + playerName +' in ' + roomName);
 		var newPlayerDetail = {
 			'positionX': 0,
@@ -80,7 +80,7 @@ function addPlayer(roomName,playerName){
 		usersRef.update(newPlayer);
 	  }
 	});
-} 
+}
 function deleteRoom(roomName){
 	ref.once("value", function(snapshot) {
 	  if(snapshot.hasChild(roomName) == false){
@@ -93,7 +93,7 @@ function deleteRoom(roomName){
 	});
 }
 
-function deletePlayer(roomName,playerName){ 
+function deletePlayer(roomName,playerName){
 	$.get(REST + '/deletePlayer/' + roomName + '/' + playerName, function(data) {
     	if(data == true) console.log(roomName + '/' + playerName + ' deleted');
 	    else console.log(playerName + ' DNE');
@@ -131,7 +131,7 @@ function getRoomStatus(roomName){
 	});
 	return null;
 }
-function getRoomSize(){ 
+function getRoomSize(){
 	var sum = 0;
 	for(i in special_key_pair) sum++;
 	return sum;
@@ -147,7 +147,7 @@ function getPlayerStatus(roomName,playerName){
 	});
 }
 
-setInterval(function(){  
+setInterval(function(){
 	if(login == false){
 		$.post(REST + '/renewConnection/' + roomName + '/' + playerName, function(data) {
 	    	console.log('renewed status: ' + roomName + ' ' + playerName);

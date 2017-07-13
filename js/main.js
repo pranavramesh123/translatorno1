@@ -5,8 +5,8 @@ var Context = {
         create: create,
         update: update
     }),
-    width: $(window).width()-30,
-    height: $(window).height()-30
+    width: $(window).width() - 30,
+    height: $(window).height() - 30
 };
 
 // information of fireball attack
@@ -112,7 +112,7 @@ function update() {
 
     // other necessary updates
     currentPlayer.player.rotation = Context.game.physics.arcade.angleToPointer(currentPlayer.player);
-    fire();	
+    fire();
     enemyManager.update();
 
     // player position
