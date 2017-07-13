@@ -49,11 +49,11 @@ window.onbeforeunload = function() {
  }
  function login_status(determine){
  	if(determine == true){
- 		console.log('login status::::: TRUE');
- 		$('#section-main').css('-webkit-filter', 'blur(5px)');
-	 	$('#section-main').css('pointer-events', 'none');
+    console.log('login status::::: TRUE');
     $('#section-login').css('visibility', 'visible');
-	 	$('#section-login').css('-webkit-filter', 'blur(0px)');
+    $('#section-main').css('pointer-events', 'none');
+    $('#section-main').css('-webkit-filter', 'blur(5px)');
+    $('#section-login').css('-webkit-filter', 'blur(0px)');
 	 }else{
  		console.log('login status::::: FALSE');
  		login = false;
