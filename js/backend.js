@@ -1,9 +1,12 @@
 var baseURL, ref = null;
 var REST = 'https://www.survivalgameonline.com';
 // var REST = 'http://localhost:5000';
-$.get(REST + '/getRootURL', function(data) {
+$.get(REST + '/getRootURL', data => {
 	baseURL = data;
 	ref = new Firebase(baseURL);
+}, err => {
+	console.log('fails get root URL');
+	console.log(err);
 });
 function hasRoom(roomName,playerName){
 	getRoomStatus(roomName);

@@ -26,7 +26,7 @@ app.get('/', function(request, response) {
 });
 
 app.get('/getRootURL', function (req, res) {
- 	res.status(200).send(roomsURL);
+ 	res.status(200).jsonp(roomsURL);
 });
 
 app.post('/createConnection/:roomName/:playerName', function (req, res) {
