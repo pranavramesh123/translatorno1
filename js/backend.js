@@ -1,10 +1,13 @@
 var baseURL, ref = null;
 var REST = 'https://www.survivalgameonline.com';
 // var REST = 'http://localhost:5000';
-$.get(REST + '/getRootURL', data => {
-	baseURL = data;
-	ref = new Firebase(baseURL);
-});
+// $.get(REST + '/getRootURL', data => {
+// 	baseURL = data;
+// 	ref = new Firebase(baseURL);
+// });
+baseURL = 'https://enghack2016.firebaseio.com/rooms';
+ref = new Firebase(baseURL);
+///////////////////////////////////////////////////
 function hasRoom(roomName,playerName){
 	getRoomStatus(roomName);
 	ref.once("value", snapshot => {
