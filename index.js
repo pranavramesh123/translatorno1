@@ -47,13 +47,13 @@ app.post('/renewConnection/:roomName/:playerName', function (req, res) {
 	res.status(200).send(true);
 });
 
-app.get('/deletePlayer/:roomName/:playerName', function (req, res) {
+app.get('/deletePlayer/:roomName/:playerName', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', allowedURL);
 	console.log('RESTful DELETE');
 	deletePlayer(req, res, 'remote');
 });
 
-app.get('/deleteAllRooms', function (req, res) {
+app.get('/deleteAllRooms', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', allowedURL);
 	console.log('Database Cleared & Reset');
 	playerManager.data = [];
@@ -65,7 +65,7 @@ app.get('/deleteAllRooms', function (req, res) {
 
 //Port Setting
 app.set('port', (process.env.PORT || 5000));
-app.listen(app.get('port'), function() {
+app.listen(app.get('port'), () => {
   console.log('Node app is running on port', app.get('port'));
 });
 
@@ -77,8 +77,8 @@ function deletePlayer(req, res, owner){
 	else var playerName = res;
 	console.log('delete Player Function is called ' + roomName + ' ' + playerName);
 	var roomRef = ref.child(roomName);
-	roomRef.once("value", function(snapshot) {
-	  if(snapshot.hasChild(playerName) == false){
+	roomRef.once("value", snapshot => {
+	  if(!snapshot.hasChild(playerName)){
 	  	console.log(playerName + ' DNE ');
 		if(owner == 'remote') res.status(404).send(false);
 	  }else{

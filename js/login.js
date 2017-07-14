@@ -51,7 +51,7 @@ function login_status(decision){
      }else{
         console.log('login status::::: FALSE');
         login = false;
-        $.post(REST + '/createConnection/' + roomName + '/' + playerName, function(data) {
+        $.post(REST + '/createConnection/' + roomName + '/' + playerName, data => {
             console.log('Connection Created: ' + roomName + ' ' + playerName);
         });
         Context.game.paused = false;
