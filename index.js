@@ -1,4 +1,4 @@
-//Basic Setup
+// Basic Setup
 var express = require('express');
 var path = require("path");
 var app = express();
@@ -13,16 +13,16 @@ firebase.initializeApp({
 });
 var db = firebase.database();
 var ref = db.ref("/rooms");
-//JSON Parser
+// JSON Parser
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-//Heroku Node Setup
+// Heroku Node Setup
 app.use(express.static(__dirname + ''));
 app.set('views', __dirname + '');
 app.set('view engine', 'html');
 
-//RESTful API
+// RESTful API
 app.get('/', function(request, response) {
     res.setHeader('Access-Control-Allow-Origin', allowedURL);
     response.render('index');
@@ -63,13 +63,13 @@ app.get('/deleteAllRooms', (req, res) => {
 	res.status(200).send('Delete All Rooms Request Sent');
 });
 
-//Port Setting
+// Port Setting
 app.set('port', (process.env.PORT || 5000));
 app.listen(app.get('port'), () => {
   console.log('Node app is running on port', app.get('port'));
 });
 
-//utility function
+// utility function
 function deletePlayer(req, res, owner){
 	if(owner == 'remote')	var roomName = req.params.roomName;
 	else var roomName = req;
@@ -80,19 +80,20 @@ function deletePlayer(req, res, owner){
 	roomRef.once("value", snapshot => {
 	  if(!snapshot.hasChild(playerName)){
 	  	console.log(playerName + ' DNE ');
-		if(owner == 'remote') res.status(404).send(false);
+  		if(owner == 'remote') res.status(404).send(false);
 	  }else{
-	  	//Deleting
-		var playerRef = roomRef.child(playerName);
-		playerRef.set(null);
+    	// Deleting
+  		var playerRef = roomRef.child(playerName);
+  		playerRef.set(null);
 	  	console.log(playerName + ' EXIST ');
-		if(owner == 'remote') res.status(200).send(true);
+  		if(owner == 'remote')
+        res.status(200).send(true);
 	  }
 	});
 }
 // Play Manager
 var playerManager = new LinkedList();
-//Timer
+// Timer
 setInterval(() => {
 	console.log("Janitor in action with: " + playerManager.length() + ' players');
 	if(playerManager.length() == 0) return;
